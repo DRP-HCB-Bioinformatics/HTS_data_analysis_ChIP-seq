@@ -1,0 +1,35 @@
+---
+title: "Intro To ChIP-Seq"
+format: html
+syntax-highlighting: ayu
+---
+
+dump general notes here;
+
+Bioinformatics core at the [Discovery Research Platform for Hidden Cell Biology](https://biology.ed.ac.uk/drp), today we are building on skills learned from previous sessions, now looking specifically at ChIP-Seq data and considering it’s experimental design, particularly the use of input controls and the importance of replicates. We will briefly QC our raw reads, before looking at alignment and understanding those outputs i.e. what makes a “good” alignment and what to consider filtering. Downstream,we will perform peak calling and understand how to explore regions of interest. Running through this will be standard visualisation techniques to explore tracks from the data in a genome browser. Finally, looking at specific tools to measure the success of the actual experiment.
+
+:::: challenge
+<h2><i class="fas fa-pencil-alt"></i> Challenge:</h2>
+
+challenge text
+
+<details>
+
+<summary>Solution</summary>
+
+::: solution
+<h2><i class="far fa-eye"></i> Solution:</h2>
+
+solution text
+:::
+
+</details>
+::::
+
+::: key-points
+<h2><i class="fas fa-thumbtack"></i> Key points</h2>
+
+- 
+
+- 
+:::

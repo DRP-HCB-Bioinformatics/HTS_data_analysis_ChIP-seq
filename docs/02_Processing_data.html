@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Intro To ChIP-Seq – Introduction to ChIP-Seq</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./images/DRP_banner_transparent2.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-713b0136666c1ca4047413a70816f99a.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d55ad538553833994e65ea0dc4f9e74e.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-713b0136666c1ca4047413a70816f99a.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-b629e5cb0aecc7c9cdf6c9d1f8bfbbe2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-b629e5cb0aecc7c9cdf6c9d1f8bfbbe2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-b629e5cb0aecc7c9cdf6c9d1f8bfbbe2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="challengestyles.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./02_Processing_data.html">Processing Data</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+      <a href="./index.html" class="sidebar-logo-link">
+      <img src="./images/DRP_banner_transparent2.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="./images/DRP_banner_transparent2.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_Getting_started.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting Started</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_Processing_data.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Processing Data</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_Visualisation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Visualisation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_Analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analysis</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#quality-control" id="toc-quality-control" class="nav-link active" data-scroll-target="#quality-control">Quality Control</a></li>
+  <li><a href="#fastqc" id="toc-fastqc" class="nav-link" data-scroll-target="#fastqc">FastQC</a></li>
+  <li><a href="#fastq-screen" id="toc-fastq-screen" class="nav-link" data-scroll-target="#fastq-screen">Fastq screen</a></li>
+  <li><a href="#multiqc" id="toc-multiqc" class="nav-link" data-scroll-target="#multiqc">MultiQC</a></li>
+  <li><a href="#trimming" id="toc-trimming" class="nav-link" data-scroll-target="#trimming">Trimming</a></li>
+  <li><a href="#qc-on-trimmed-data" id="toc-qc-on-trimmed-data" class="nav-link" data-scroll-target="#qc-on-trimmed-data">QC on Trimmed Data</a></li>
+  <li><a href="#aligning-reads" id="toc-aligning-reads" class="nav-link" data-scroll-target="#aligning-reads">Aligning reads</a></li>
+  <li><a href="#sam-format" id="toc-sam-format" class="nav-link" data-scroll-target="#sam-format">SAM Format</a></li>
+  <li><a href="#samtools" id="toc-samtools" class="nav-link" data-scroll-target="#samtools">SAMTOOLS</a></li>
+  <li><a href="#filtering-data" id="toc-filtering-data" class="nav-link" data-scroll-target="#filtering-data">Filtering Data</a>
+  <ul class="collapse">
+  <li><a href="#coverage-tracks" id="toc-coverage-tracks" class="nav-link" data-scroll-target="#coverage-tracks">Coverage Tracks</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Intro To ChIP-Seq</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="quality-control" class="level2">
+<h2 class="anchored" data-anchor-id="quality-control">Quality Control</h2>
+<p>The first step is to assess the quality of our sequencing data, we will be using <a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FastQC</a> and <a href="https://seqera.io/multiqc/">MultiQC</a> to do this.</p>
+</section>
+<section id="fastqc" class="level2">
+<h2 class="anchored" data-anchor-id="fastqc">FastQC</h2>
+<p>FastQC is a tool that provides simple quality control checks on FASTQ files and creates several exploratory plots. The command can take multiple files at once or you can use wildcards (*) to specify multiple files. Once running, it will provide a progress report for each file.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> fastq</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">fastqc</span> <span class="pp">*</span>.fastq.gz</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>FastQC generates a zip file as well as an html file for each input. The html file is the easiest file to view and contains several plots and tables that provide information about the quality of the data. The zip file contains the raw data used to generate the plots, which can be useful for further analysis or troubleshooting.</p>
+<p>Once this is finished you can view the reports via; https://bifx-core3.bio.ed.ac.uk/~username</p>
+<p>In your web browser, navigate to your workshop folder and the reports are under fastq ending with ’_fastqc.html’</p>
+<p>Pre compiled reports are also available <a href="">here</a> <em>NEED TO ADD THIS</em></p>
+<p>A reminder of what each section means can be found in the <a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/">FastQC docs</a></p>
+<p>Feel free to look through these but it’s generally easier to aggregate our reports into one, we can do with with MultiQC.</p>
+</section>
+<section id="fastq-screen" class="level2">
+<h2 class="anchored" data-anchor-id="fastq-screen">Fastq screen</h2>
+<p>dont really need/already covered?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="multiqc" class="level2">
+<h2 class="anchored" data-anchor-id="multiqc">MultiQC</h2>
+<p>MultiQC provides a simple way to combine the results from multiple FastQC analyses into a single report, allowing you to assess the overall quality of a study and easily identify samples that may require further investigation.</p>
+<p>MultiQC is straightforward to use and can summarise results from dozens or even hundreds of samples in a single, easy-to-navigate report. Run multiqc on the fastq directory to combine the FastQC reports from both reads.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">multiqc</span> .</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You might need to refresh your browser to see this in the same space as your individual FastQC reports.</p>
+<p>Look through the report(s) and discuss what needs to be done.</p>
+<p><a href="">Preprocessed</a> <em>NEED TO ADD THIS</em></p>
+<div class="challenge">
+<h2 class="anchored">
+<i class="fas fa-pencil-alt"></i> Challenge:
+</h2>
+<p>What is the quality of the reads like?</p>
+<p>What looks odd and how might we explain it?</p>
+<p>Are both replicates similar?</p>
+<details>
+<summary>
+Solution
+</summary>
+<div class="proof solution">
+<p><span class="proof-title"><em>Solution</em>. </span></p>
+<h2 class="anchored">
+<i class="far fa-eye"></i> Solution:
+</h2>
+<p>The quality (~30) is good but trails off towards end</p>
+<p>There is clearly some adapter contamination throughout</p>
+<p>Rep2 looks slightly worse</p>
+<p>Remember this is not a full data set so the lines are a bit more ‘jaggy’ than they would be.</p>
+</div>
+</details>
+</div>
+</section>
+<section id="trimming" class="level2">
+<h2 class="anchored" data-anchor-id="trimming">Trimming</h2>
+<p>There are multiple trimming tools available, today we will use <a href="">Trim Galore</a>, this is actually a wrapper for <a href="">Cutadapt</a>, see also <a href="https://github.com/usadellab/trimmomatic">Trimmomatic</a>.</p>
+<p>There are several different means of trimming data, by quality, length or by specific adapter sequence (or all of the abaove), this is carried out in a specific order. First reads are trimmed based on our chosen quality filter, then for adapter contamination and finally any reads below our minimum length are discarded.</p>
+<p>Trim Galore selects the correct adapter sequence for us, we are selecting a minimum phred quality of 20 and length of 20bp and a stringency of 3 which mean atleast 3 bases must match our adapter sequence before trimming. The cores argument determines how many CPUs are used, it is able to handle all samples in one command.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">trim_galore</span> <span class="at">--cores</span> 4 <span class="at">--fastqc</span> <span class="at">-q</span> 20 <span class="at">--length</span> 20 <span class="dt">\</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--stringency</span> 3 <span class="dt">\</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  CTCF_Rep1.fastq.gz <span class="dt">\</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  CTCF_Rep2.fastq.gz <span class="dt">\</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  Input_Control.fastq.gz</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This generates new ‘trimmed’ FASTQ files as well as text reports (ending ’_trimming_report.txt’) but also runs FastQC for us on the trimmed data.</p>
+</section>
+<section id="qc-on-trimmed-data" class="level2">
+<h2 class="anchored" data-anchor-id="qc-on-trimmed-data">QC on Trimmed Data</h2>
+<p>Once we have performed the trimming it’s a good idea to re-run our FastQC and MultiQC to make sure the trimmed data is as expected and resolves any issues.</p>
+<p>We can re-run MultiQC while adding the -f (force) argument to override our previous report and –fullnames to not clean our sample names and include the trimmed data.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">multiqc</span> <span class="at">--fullnames</span> <span class="at">-f</span> .</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Link to updated reports <a href=""></a> <em>NEED TO ADD THIS</em></p>
+<p>Hopefully the cleaned data is now passing each section or atleast receiving a warning rather than a fail. Note I have subsampled a GC rich chromosome. Remember these tests are not absolute and depend on the specific data.</p>
+</section>
+<section id="aligning-reads" class="level2">
+<h2 class="anchored" data-anchor-id="aligning-reads">Aligning reads</h2>
+<p>Now that we have our trimmed data, we can align our reads to our reference genome, we will use GRCh38/hg38, references are built from FASTA sequence files.</p>
+<p>We already have the relevant reference FASTA file available on the server, this also includes indexes needed for the main alignment tools, these are required for the running of most tools.</p>
+<p>If running on your own machine this can be obtained from</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">link</span> to fasta file/bt2 indexes  <span class="pp">*</span>NEED TO ADD THIS<span class="pp">*</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Today we will use <a href="https://bowtie-bio.sourceforge.net/bowtie2/index.shtml">bowtie2</a> but there are several popular short read alignment tools available (<a href="https://github.com/lh3/BWA/">BWA</a>, <a href="https://github.com/lh3/minimap2">miniMap2</a> <em>etc.</em>), these are generally interchangeable but for RNA-seq experiments it is strongly recommended to use <a href="https://github.com/alexdobin/STAR">STAR</a> as it is splice aware.</p>
+<p>We will point to the relevant index file but for reference this was created with;</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">### do not run</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#bowtie2-build -f /home/genomes/human/hg38/hg38.fa hg38</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">###</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Lets create a bowtie2 output directory just for our alignments;</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ..</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> bt2_out</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Assuming this index exists we can run the alignment with these commands, we are running each sample one by one, this will take a little while.</p>
+<ul>
+<li>-p Processors (threads)</li>
+<li>-x Basename of the genome index</li>
+<li>-U Unpaired data</li>
+<li>-S Output in SAM format</li>
+</ul>
+<p>With 2&gt; we are redirecting output to a log file</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Rep 1</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">bowtie2</span> <span class="at">-p</span> 4 <span class="at">-x</span> /home/genomes/human/hg38/bowtie2_indexes/hg38 <span class="at">-U</span> fastq/CTCF_Rep1_trimmed.fq.gz <span class="at">-S</span> bt2_out/CTCF_Rep1.sam <span class="dv">2</span><span class="op">&gt;</span> bt2_out/CTCF_Rep1_bowtie2.log</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Rep 2</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="ex">bowtie2</span> <span class="at">-p</span> 4 <span class="at">-x</span> /home/genomes/human/hg38/bowtie2_indexes/hg38 <span class="at">-U</span> fastq/CTCF_Rep2_trimmed.fq.gz <span class="at">-S</span> bt2_out/CTCF_Rep2.sam <span class="dv">2</span><span class="op">&gt;</span> bt2_out/CTCF_Rep2_bowtie2.log</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Input Control</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="ex">bowtie2</span> <span class="at">-p</span> 4 <span class="at">-x</span> /home/genomes/human/hg38/bowtie2_indexes/hg38 <span class="at">-U</span> fastq/Input_Control_trimmed.fq.gz <span class="at">-S</span> bt2_out/Input_Control.sam <span class="dv">2</span><span class="op">&gt;</span> bt2_out/Input_Control_bowtie2.log</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The output <em>alignments</em> are in the <strong>Sequence Alignment/Map (SAM)</strong> format, generally we can output/convert directly into the compressed ‘binary’ <strong>BAM</strong> format but lets take a closer look at the SAM files.</p>
+</section>
+<section id="sam-format" class="level2">
+<h2 class="anchored" data-anchor-id="sam-format">SAM Format</h2>
+<p>Sequence Alignment/Map (SAM) files contain our alignment positions as well as columns contaning information on the quality of the alignment, mismatches, the number of times a read mapped, mapping of paired ends and other custom flags and statistics.</p>
+<p>See the <a href="https://samtools.github.io/hts-specs/SAMv1.pdf">Docs</a> for the full specification.</p>
+<p>[SAM diagram here] <em>NEED TO ADD THIS</em></p>
+<p>Let’s take a look at one of our SAM files.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view  bt2_out/CTCF_Rep1.sam <span class="kw">|</span> <span class="fu">less</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Each alignment contains a <strong>SAM flag</strong> which encodes information, this can be used for downstream filtering or reporting.</p>
+</section>
+<section id="samtools" class="level2">
+<h2 class="anchored" data-anchor-id="samtools">SAMTOOLS</h2>
+<p><a href="https://www.htslib.org/">Samtools</a> is a powerful tool for working with SAM/BAM files.</p>
+<p>Here we are sorting our SAM alignments into the compressed BAM format, and also indexing the BAM files as downstream tools require this.</p>
+<ul>
+<li>-@ specifices threads/CPUs</li>
+<li>-o Output is specified as a parameter</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Rep 1</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> sort <span class="at">-@</span> 4 <span class="at">-o</span> bt2_out/CTCF_Rep1.bam bt2_out/CTCF_Rep1.sam</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> index bt2_out/CTCF_Rep1.bam</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Rep 2</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> sort <span class="at">-@</span> 4 <span class="at">-o</span> bt2_out/CTCF_Rep2.bam bt2_out/CTCF_Rep2.sam</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> index bt2_out/CTCF_Rep2.bam</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Input Control</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> sort <span class="at">-@</span> 4 <span class="at">-o</span> bt2_out/Input_Control.bam bt2_out/Input_Control.sam</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> index bt2_out/Input_Control.bam</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Samtools Flagstat summarises the mapping rate for reads</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> flagstat bt2_out/CTCF_Rep1.bam</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We can see there are 779,426 reads, 770,259 of which mapped.</p>
+<p>Let’s confirm how many are unmapped, here we are filtering (-f) using the samflag for unmapped (04) and counting (-c) with samtools view</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-c</span> <span class="at">-f</span> 4 bt2_out/CTCF_Rep1.bam</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We should see 9,167 are unmapped, this was actually in our Bowtie2 log</p>
+<div class="challenge">
+<h2 class="anchored">
+<i class="fas fa-pencil-alt"></i> Challenge:
+</h2>
+<p>How many reads mapped to replicate 2</p>
+<details>
+<summary>
+Solution
+</summary>
+<div class="proof solution">
+<p><span class="proof-title"><em>Solution</em>. </span></p>
+<h2 class="anchored">
+<i class="far fa-eye"></i> Solution:
+</h2>
+<p>You could use; samtools flagstat bt2_out/CTCF_Rep2.bam</p>
+<p>653498</p>
+<p>Or being clever you could count excluding unmapped flag with ‘-F’ rather an ‘-f’</p>
+<p>samtools view -c -F 4 bt2_out/CTCF_Rep2.bam</p>
+<p>Also you check the bowtie2 logs; less bt2_out/CTCF_Rep2_bowtie2.log</p>
+</div>
+</details>
+</div>
+<p>We can look at where our reads align with idxstats;</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> idxstats bt2_out/CTCF_Rep1.bam <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-E</span> <span class="st">'^chr[0-9XYM]+\b'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>There are a lot of additional chromosomes contigs here so we’re just filtering out the main ones.</p>
+<p>The fist column is the chromosome, the second is its size and the third is the number of mapped reads, can you tell which chromosome has the most mapped reads?</p>
+</section>
+<section id="filtering-data" class="level1">
+<h1>Filtering Data</h1>
+<p>Multimap reads map to multiple locations with equal probability, they are encoded as SAM flag 256 ‘secondary alignment’ or ‘not primary alignment’</p>
+<p><img src="images/multi.png" class="img-fluid" width="399"></p>
+<p>A key point is that different alignment tools handle multimap reads differently by default, this can be controlled by tool options but in our case bowtie2 has randomly selected a multimapped alignment, flagged it with a low <strong>MAPQ score</strong> and discarded other possible locations. Mapping Quality (MAPQ) predicts the likelihood the alignment is accurate.</p>
+<p>Looking back at our Bowtie2 Logs, we can see how many unique vs multimapped reads we have.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">less</span> bt2_out/CTCF_Rep2_bowtie2.log</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>779426 reads; of these: 779426 (100.00%) were unpaired; of these: 9167 (1.18%) aligned 0 times 546826 (70.16%) aligned exactly 1 time 223433 (28.67%) aligned &gt;1 times 98.82% overall alignment rate</p>
+<p>A note on duplicates, distinct from multimap reads are duplicates which all map to the same location, we cannot distinguish noise from genuine signal so it it generally not recommended to remove these, although it is possible to mark duplicates for downstream analysis.</p>
+<p>We’ve seen we can filter our reads using SAM Flags to count, this can also be useful for filtering out specific reads to exclude or that may be of interest to us. We can also combined multiple flags e.g.&nbsp;Unmapped (04) plus not primary alignment (256) = 260.</p>
+<p>A useful resource for this is <a href="https://broadinstitute.github.io/picard/explain-flags.html">explain flags</a></p>
+<p>A more efficient way to achieve this is by <em>MAPQ</em> score, here we are using -q 20 to filter based on MAPQ, this is filtering out low probability (1/100) alignments and unmapped reads.</p>
+<p>Note we are saving the output as _filtered.bam, this is what we will us going forward so again we will index that file.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Rep 1</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-@</span> 4 <span class="at">-b</span> <span class="at">-q</span> 20 bt2_out/CTCF_Rep1.bam <span class="op">&gt;</span> bt2_out/CTCF_Rep1_filtered.bam</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> index bt2_out/CTCF_Rep1_filtered.bam</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Rep 2</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-@</span> 4 <span class="at">-b</span> <span class="at">-q</span> 20 bt2_out/CTCF_Rep2.bam <span class="op">&gt;</span> bt2_out/CTCF_Rep2_filtered.bam</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> index bt2_out/CTCF_Rep2_filtered.bam</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Input Control</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-@</span> 4 <span class="at">-b</span> <span class="at">-q</span> 20 bt2_out/Input_Control.bam <span class="op">&gt;</span> bt2_out/Input_Control_filtered.bam</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> index bt2_out/Input_Control_filtered.bam</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Take a look at your filtered file;</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> flagstat bt2_out/CTCF_Rep1_filtered.bam</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We now have 614,524 alignments after filtering</p>
+<p>For some genomes there are blacklisted regions available as annotations, these are problematic areas which can cause issues with alignments, it is not strictly necessary today but we could use these to filter out alignments that cover the specific genomics region defined in that coorindate <a href="https://genome.ucsc.edu/FAQ/FAQformat.html#format1">BED</a> file using <a href="https://bedtools.readthedocs.io/en/latest/">BedTools</a> for example.</p>
+<section id="coverage-tracks" class="level2">
+<h2 class="anchored" data-anchor-id="coverage-tracks">Coverage Tracks</h2>
+<p>Technically we can view our BAM files in a genome browser (right down to the individual base calls), but despite being compressed these files are still large and not easily view-able, they simply contain all of our alignments so make no account for sequencing depth. We want to convert our BAMs into a binned format so we can view it as a <strong>coverage track</strong>.</p>
+<p><a href="https://genome.ucsc.edu/goldenPath/help/bedgraph.html">Bedgraph</a> files are human readable and contain continuous coordinate data with value scores, <a href="https://genome.ucsc.edu/goldenPath/help/bigWig.html">BigWig</a> contain the same information in compressed binary format and are excellent for genome browsers.</p>
+<p>To create out bigWig tracks we are using <a href="https://deeptools.readthedocs.io/en/develop/content/tools/bamCoverage.html">bamCoverage</a> which is a part of the <a href="https://deeptools.readthedocs.io/en/latest/">DeepTools</a> package of tools.</p>
+<p>Multiple methods of normalization as available, here we are using Bins Per Million (BPM) to handle read depth, we are selecting a bin or window size of 10.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bamCoverage</span> <span class="dt">\</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-b</span> bt2_out/CTCF_Rep1_filtered.bam <span class="dt">\</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-o</span> bt2_out/CTCF_Rep1.bw <span class="dt">\</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">--binSize</span> 10 <span class="dt">\</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">--normalizeUsing</span> BPM <span class="dt">\</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">--numberOfProcessors</span> 4</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="ex">bamCoverage</span> <span class="at">-b</span> bt2_out/CTCF_Rep2_filtered.bam <span class="at">-o</span> bt2_out/CTCF_Rep2.bw <span class="at">--binSize</span> 10 <span class="at">--normalizeUsing</span> BPM <span class="at">--numberOfProcessors</span> 4</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="ex">bamCoverage</span> <span class="at">-b</span> bt2_out/Input_Control_filtered.bam <span class="at">-o</span> bt2_out/Input_Control.bw <span class="at">--binSize</span> 10 <span class="at">--normalizeUsing</span> BPM <span class="at">--numberOfProcessors</span> 4</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>In the next section we will visualise our bigWig files in <a href="https://igv.org/doc/desktop/#DownloadPage/">IGV</a>, it is also possible to upload your tracks to online genome browsers such as <a href="https://genome.ucsc.edu/">UCSC</a>, <a href="https://useast.ensembl.org/index.html">ensembl</a> or the <a href="https://igv.org/app/">IGV web app</a>.</p>
+<div class="key-points">
+<h2 class="anchored">
+<i class="fas fa-thumbtack"></i> Key points
+</h2>
+<ul>
+<li>How to assess FASTQ quality</li>
+<li>When and what to Trim</li>
+<li>Align to the correct reference</li>
+<li>Alignments are in SAM/BAM format</li>
+<li>Filtering based on SAM Flags and MAPQ Scores</li>
+<li>Coverage Track formats</li>
+</ul>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

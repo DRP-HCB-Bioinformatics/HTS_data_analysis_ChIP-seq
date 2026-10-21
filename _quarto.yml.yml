@@ -1,0 +1,22 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Introduction to ChIP-Seq"
+  sidebar:
+    contents:
+      - href: index.qmd
+        text: Home
+      - href: 01_Getting_started.qmd
+        text: Getting Started
+      - href: 02_Process_data.qmd
+        text: Processing Data
+  
+        
+format:
+  html:
+    theme: cosmo
+    css: challengestyles.css
+    toc: true
+    link-external-newwindow: true
