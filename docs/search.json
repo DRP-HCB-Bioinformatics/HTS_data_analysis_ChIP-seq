@@ -1,47 +1,73 @@
 [
   {
-    "objectID": "01_Getting_started.html",
-    "href": "01_Getting_started.html",
+    "objectID": "04_Analysis.html",
+    "href": "04_Analysis.html",
     "title": "HTS data analysis (ChIP-seq)",
     "section": "",
-    "text": "ChIP-seq (Chromatin immunoprecipitation followed by sequencing) is a lab based method to identify DNA-binding regions of specific proteins, often looking at either histone modifications or transcription factor binding sites, while the initial steps for these are the same, peak calling and downstream analysis will differ.",
+    "text": "Previously we assessed the quality of the sequencing and alignments but how about the success of our actual experiment?",
     "crumbs": [
-      "Getting Started"
+      "Analysis"
     ]
   },
   {
-    "objectID": "01_Getting_started.html#getting-started",
-    "href": "01_Getting_started.html#getting-started",
+    "objectID": "04_Analysis.html#analysis",
+    "href": "04_Analysis.html#analysis",
     "title": "HTS data analysis (ChIP-seq)",
     "section": "",
-    "text": "ChIP-seq (Chromatin immunoprecipitation followed by sequencing) is a lab based method to identify DNA-binding regions of specific proteins, often looking at either histone modifications or transcription factor binding sites, while the initial steps for these are the same, peak calling and downstream analysis will differ.",
+    "text": "Previously we assessed the quality of the sequencing and alignments but how about the success of our actual experiment?",
     "crumbs": [
-      "Getting Started"
+      "Analysis"
     ]
   },
   {
-    "objectID": "01_Getting_started.html#connecting-to-the-server",
-    "href": "01_Getting_started.html#connecting-to-the-server",
+    "objectID": "04_Analysis.html#macs2",
+    "href": "04_Analysis.html#macs2",
     "title": "HTS data analysis (ChIP-seq)",
-    "section": "Connecting to the Server",
-    "text": "Connecting to the Server\nToday, we will connect to one of the DRP servers to start our Linux journey. Connecting to the server is dependent on the machine you are working with. To connect\n\nBoth Linux and Mac have a “Terminal”, which is command line and can connect to a server using ssh. By typing in the following in your terminal, you can easily connect to the DRP server.\nReplace &lt;UUN&gt; by your own UUN or username.\n\nssh &lt;UUN&gt;@bifx-core1.bio.ed.ac.uk\n\nFor Windows, a tool like MobaXTerm needs to be installed to be able to connect to a server easily. Connecting uses ssh in this case as well. Take a look at the MobaXTerm demo to learn how to connect using ssh. Make sure to use you UUN as your username and the server link as follow:\n\nbifx-core1.bio.ed.ac.uk\nYou might be asked if you trust the server, make sure to answer yes. Once you’ve entered your password you should connect to the server and see something like the following:\nWelcome to Ubuntu 24.04.4 LTS (GNU/Linux 6.8.0-117-generic x86_64)\n\n * Documentation:  https://help.ubuntu.com\n * Management:     https://landscape.canonical.com\n * Support:        https://ubuntu.com/pro\n################################################################################\nTHIS DEVICE IS PART OF A PRIVATE NETWORK.\n\nUnauthorised access or use of this equipment is prohibited \nand constitutes an offence under the Computer Misuse Act 1990.\nIf you are not authorised to use this system, terminate this \nsession now.\n\nAll activity on this system is monitored and recorded.\n\nPlease direct any queries to IS.Helpline@ed.ac.uk.\n\n################################################################################\n&lt;UUN&gt;@bifx-core1:~$\nThis prompt shows that you are logged in to the bifx-core1 bioinformatics server, and that you are in your home directory (which is referred to using the ~ character on Linux systems).\nPlease see our website for more specific instructions on using the DRP-HCB bioinformatics servers.",
+    "section": "MACS2",
+    "text": "MACS2\nModel-based Analysis for ChIP-Seq MACS2 is used to identify peaks, it operates on BAM files.\n\n-g (Genome Size) hs for Homo sapiens\n-t treatment IP file\n-c control input file\n-f BAM format\n–nomodel (used here as this is a small dataset)\n\n# check in correct workspace (ChIP-seq_workshop)\nmkdir macs2_results\n# Replicate 1\nmacs2 callpeak -t bt2_out/CTCF_Rep1_filtered.bam \\\n  -c bt2_out/Input_Control_filtered.bam \\\n  -f BAM -g hs -n CTCF_Rep1 --nomodel \\\n  --outdir macs2_results/\n\n# Replicate 2\nmacs2 callpeak -t bt2_out/CTCF_Rep2_filtered.bam \\\n  -c bt2_out/Input_Control_filtered.bam \\\n  -f BAM -g hs -n CTCF_Rep2 --nomodel \\\n  --outdir macs2_results/\nOnce we have called our peaks we can add these to our IGV session, but first lets start the next step running, we will examine the sequence at our peaks for specific motifs.",
     "crumbs": [
-      "Getting Started"
+      "Analysis"
     ]
   },
   {
-    "objectID": "intro_chip_26.html",
-    "href": "intro_chip_26.html",
-    "title": "Intro To ChIP-Seq",
-    "section": "",
-    "text": "dump general notes here;\nBioinformatics core at the Discovery Research Platform for Hidden Cell Biology, today we are building on skills learned from previous sessions, now looking specifically at ChIP-Seq data and considering it’s experimental design, particularly the use of input controls and the importance of replicates. We will briefly QC our raw reads, before looking at alignment and understanding those outputs i.e. what makes a “good” alignment and what to consider filtering. Downstream,we will perform peak calling and understand how to explore regions of interest. Running through this will be standard visualisation techniques to explore tracks from the data in a genome browser. Finally, looking at specific tools to measure the success of the actual experiment.\n\n\n Challenge:\n\nchallenge text\n\n\nSolution\n\n\nSolution. \n\n Solution:\n\nsolution text\n\n\n\n\n\n Key points"
+    "objectID": "04_Analysis.html#homer",
+    "href": "04_Analysis.html#homer",
+    "title": "HTS data analysis (ChIP-seq)",
+    "section": "HOMER",
+    "text": "HOMER\nWe will just run this on our first replicate, we are using a script from the HOMER suite of tools, we will select the top 500 peaks to speed things up.\nsort -k9,9nr macs2_results/CTCF_Rep1_peaks.narrowPeak | head -n 500 &gt; macs2_results/CTCF_Rep1_top500_peaks.narrowPeak\nIt requires a FASTA file and parsed folder, we will just create a symbolic link to these;\nln -s /home/genomes/human/hg38/hg38.fa .\nln -s PATHTO/preparsed .\nThis is alspo available here; [NEED TO ADD THIS]\n-size 200 limit -mask repeats\nfindMotifsGenome.pl macs2_results/CTCF_Rep1_top500_peaks.narrowPeak hg38.fa -preparsedDir preparsed/ homer_results/ -size 200 -mask -p 4\nThis generates a html report, ‘homerResults.html’, we should see CTCF as our best match.\n\nWhile that’s running lets go back and look at out peak files in IGV.",
+    "crumbs": [
+      "Analysis"
+    ]
   },
   {
-    "objectID": "intro_chip_26.html#quarto",
-    "href": "intro_chip_26.html#quarto",
-    "title": "Intro to ChIP-seq",
-    "section": "",
-    "text": "Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see https://quarto.org.\n\n1 + 1\n\n[1] 2\n\n\ndump general notes here;\nuse in other sections? Bioinformatics core at the Discovery Research Platform for Hidden Cell Biology, today we are building on skills learned from previous sessions, now looking specifically at ChIP-Seq data and considering it’s experimental design, particularly the use of input controls and the importance of replicates. We will briefly QC our raw reads, before looking at alignment and understanding those outputs i.e. what makes a “good” alignment and what to consider filtering. Downstream,we will perform peak calling and understand how to explore regions of interest. Running through this will be standard visualisation techniques to explore tracks from the data in a genome browser. Finally, looking at specific tools to measure the success of the actual experiment."
+    "objectID": "04_Analysis.html#visually-inspect-peak-files",
+    "href": "04_Analysis.html#visually-inspect-peak-files",
+    "title": "HTS data analysis (ChIP-seq)",
+    "section": "Visually Inspect Peak Files",
+    "text": "Visually Inspect Peak Files\nGo back to your web browser and navigate to the macs2_results, here we want to download our ‘.narrowPeaks’ files\nThe columns are as follows:\n\nChromosome\nStart\nEnd\nIterative id given by MACS2\nInteger score for display\nStrand (irrelevant in this case)\nFold-change (fold enrichment for this peak summit against random Poisson distribution with local lambda)\nlog10 P-value (e.g., 17.68 is 1 x 10-17)\nlog10 Q-value from Benjamini–Hochberg–Yekutieli procedure\nRelative summit position to peak start\n\n[diagram in IGV with peaks added]",
+    "crumbs": [
+      "Analysis"
+    ]
+  },
+  {
+    "objectID": "04_Analysis.html#deeptools",
+    "href": "04_Analysis.html#deeptools",
+    "title": "HTS data analysis (ChIP-seq)",
+    "section": "DeepTools",
+    "text": "DeepTools\nDeeptools contains some useful plotting tools to summarise our data, lets create a heatmap across our peaks, we can run this for all our samples, this requires a two step process.\n\nreferencePoint centre of peak\na upstream distance from reference\nb downstream distance from reference\n\ncomputeMatrix reference-point \\\n  -S bt2_out/CTCF_Rep1.bw bt2_out/CTCF_Rep2.bw bt2_out/Input_Control.bw \\\n  -R macs2_results/CTCF_Rep1_peaks.narrowPeak \\\n  --referencePoint center \\\n  -a 2000 -b 2000 \\\n  -o CTCF_multi_matrix.gz \\\n  -p 4\nOnce our matrix is created we can customise out plot\nplotHeatmap -m CTCF_multi_matrix.gz \\\n  -out CTCF_multi_heatmap.png \\\n  --colorMap Reds \\\n  --samplesLabel \"Rep 1\" \"Rep 2\" \"Input\" \\\n  --refPointLabel \"Peaks\" --regionsLabel \"Peaks\" \\\n  --yAxisLabel \"Average signal (BPM)\" --xAxisLabel \"Distance from center (bp)\" --yAxisLabel \"Average signal (BPM)\" \n\nDeeptools offers a lot of plotting functions to assess short read data, take a look at the documention\n\n\n Key points\n\n\nPeak calling\nMotif Discovery\nDeeptools plotting\n\n\nThe commands in the workflow have been run one by one but basically forms the basis of a bash script, with a small amount of tweaking this could be modified to handle multiple samples simultaneously, this along with more sophisticated methods will be covered in a later workshop. While the steps for general bioinformatics pipelines are similar the tools and parameters used are specific to the data and experiment type.",
+    "crumbs": [
+      "Analysis"
+    ]
+  },
+  {
+    "objectID": "04_Analysis.html#optional-excercise",
+    "href": "04_Analysis.html#optional-excercise",
+    "title": "HTS data analysis (ChIP-seq)",
+    "section": "Optional Excercise",
+    "text": "Optional Excercise\nRetrieve some FASTQ data (possibly from the previous workshop), perform trimming if needed and map to the relevant reference genome,",
+    "crumbs": [
+      "Analysis"
+    ]
   },
   {
     "objectID": "index.html",
@@ -51,26 +77,6 @@
     "text": "Welcome to the High Throughput Sequencing data analysis (ChIP-seq) workshop.\nDuring this course you will learn to:\nThis course is hosted by the Bioinformatics Core at the DRP-HCB.",
     "crumbs": [
       "Home"
-    ]
-  },
-  {
-    "objectID": "01_Getting_started.html#fastq-data",
-    "href": "01_Getting_started.html#fastq-data",
-    "title": "HTS data analysis (ChIP-seq)",
-    "section": "FASTQ Data",
-    "text": "FASTQ Data\nThe FASTQ data used in this workshop has already been retrieved from ENCODE, for the purpose of this workshop it has been sub sampled to mostly map to a single chromosome, the full data sets are available on ENCODE here.\nFor reference, it is ChIP-Seq on Transcription Factor (TF) CTCF using human K562 cell line (chronic myelogenous leukemia), CTCF (CCCTC-binding factor) is a highly conserved zinc finger protein involved in 3D genome organisation and promoter enhancer interactions. There are two IP replicates and a single shared control (background input) sample, this is single end data.\n\n\n\nAccession\nFileName\nCondition\nReplicate\n\n\n\n\nENCFF001HTO\nCTCF_Rep1.fastq.gz\nIP\nOne\n\n\nENCFF001HTP\nCTCF_Rep2.fastq.gz\nIP\nTwo\n\n\nENCFF001HTT\nInput_Control.fastq.gz\nInput\nOne\n\n\n\nWe will create a symbolic link to the data in our own project folders, storing it in a fastq folder;\ncd ChIP-seq_workshop\nmkdir fastq\nln -s path_to_data/*fastq.gz fastq/.  *NEED TO ADD THIS*\nMD5SUM?",
-    "crumbs": [
-      "Getting Started"
-    ]
-  },
-  {
-    "objectID": "02_Processing_data.html",
-    "href": "02_Processing_data.html",
-    "title": "HTS data analysis (ChIP-seq)",
-    "section": "",
-    "text": "The first step is to assess the quality of our sequencing data, we will be using FastQC and MultiQC to do this.",
-    "crumbs": [
-      "Processing Data"
     ]
   },
   {
@@ -94,43 +100,33 @@
     ]
   },
   {
-    "objectID": "04_Analysis.html",
-    "href": "04_Analysis.html",
+    "objectID": "03_Visualisation.html#igv",
+    "href": "03_Visualisation.html#igv",
+    "title": "HTS data analysis (ChIP-seq)",
+    "section": "IGV",
+    "text": "IGV\nOpen IGV on your own machines, before adding any files the first step is to select the relevant genome in the top left, this should already be set to GRCh38/hg38 (changing this will clear the entire view), you can navigate using the chromosome tab or searching for a specific loci. You can also drag the curser along the top ruler to select a region or use the chromosome to navigate, you can zoom in and out using the top right scale. Along the bottom we can see gene annotations, we can add custom BED files here if needed.\n[diagram explaining windows in igv]",
+    "crumbs": [
+      "Visualisation"
+    ]
+  },
+  {
+    "objectID": "03_Visualisation.html#loading-tracks",
+    "href": "03_Visualisation.html#loading-tracks",
+    "title": "HTS data analysis (ChIP-seq)",
+    "section": "Loading Tracks",
+    "text": "Loading Tracks\nUsing your web directory, navigate to the three bigWigs files (ending ‘.bw’), you can either download your data or copy the link address and then within IGV select FILE/Load from File Or Load from URL, additionally you can simply drag and drop files/links into the main IGV window to view them.\n[diagram with bw tracks]\nClick and hold on a track to move left and right, or right click to see options available for each track, on the left panel you can see track information, it is possible to select multiple tracks here.\nWe expect our input to look relatively flat, with peaks throughout or ChIP data, hopefully consistent between replicates. Take some time to navigate the genome, play around with different options for the tracks and have a closer look at chromosome 19, later we will run peak calling and view these in IGV but its always good to examine the data at the earliest opportunity.\nTry adding a BAM track (easiest to use URL for this), you’ll need to zoom in close to see anything, notice IGV create a basic track for us, does this look the same as your bigWig? Have a very lose look at the alignments, what do the different coloured bands mean?\n[diagram with BAM]\nKeep this open for now, we will come back to it later.",
+    "crumbs": [
+      "Visualisation"
+    ]
+  },
+  {
+    "objectID": "02_Processing_data.html",
+    "href": "02_Processing_data.html",
     "title": "HTS data analysis (ChIP-seq)",
     "section": "",
-    "text": "Previously we assessed the quality of the sequencing and alignments but how about the success of our actual experiment?",
+    "text": "The first step is to assess the quality of our sequencing data, we will be using FastQC and MultiQC to do this.",
     "crumbs": [
-      "Analysis"
-    ]
-  },
-  {
-    "objectID": "04_Analysis.html#deeptools",
-    "href": "04_Analysis.html#deeptools",
-    "title": "HTS data analysis (ChIP-seq)",
-    "section": "DeepTools",
-    "text": "DeepTools\nDeeptools contains some useful plotting tools to summarise our data, lets create a heatmap across our peaks, we can run this for all our samples, this requires a two step process.\n\nreferencePoint centre of peak\na upstream distance from reference\nb downstream distance from reference\n\ncomputeMatrix reference-point \\\n  -S bt2_out/CTCF_Rep1.bw bt2_out/CTCF_Rep2.bw bt2_out/Input_Control.bw \\\n  -R macs2_results/CTCF_Rep1_peaks.narrowPeak \\\n  --referencePoint center \\\n  -a 2000 -b 2000 \\\n  -o CTCF_multi_matrix.gz \\\n  -p 4\nOnce our matrix is created we can customise out plot\nplotHeatmap -m CTCF_multi_matrix.gz \\\n  -out CTCF_multi_heatmap.png \\\n  --colorMap Reds \\\n  --samplesLabel \"Rep 1\" \"Rep 2\" \"Input\" \\\n  --refPointLabel \"Peaks\" --regionsLabel \"Peaks\" \\\n  --yAxisLabel \"Average signal (BPM)\" --xAxisLabel \"Distance from center (bp)\" --yAxisLabel \"Average signal (BPM)\" \n\nDeeptools offers a lot of plotting functions to assess short read data, take a look at the documention\n\n\n Key points\n\n\nPeak calling\nMotif Discovery\nDeeptools plotting\n\n\nThe commands in the workflow have been run one by one but basically forms the basis of a bash script, with a small amount of tweaking this could be modified to handle multiple samples simultaneously, this along with more sophisticated methods will be covered in a later workshop. While the steps for general bioinformatics pipelines are similar the tools and parameters used are specific to the data and experiment type.",
-    "crumbs": [
-      "Analysis"
-    ]
-  },
-  {
-    "objectID": "04_Analysis.html#macs2",
-    "href": "04_Analysis.html#macs2",
-    "title": "HTS data analysis (ChIP-seq)",
-    "section": "MACS2",
-    "text": "MACS2\nModel-based Analysis for ChIP-Seq MACS2 is used to identify peaks, it operates on BAM files.\n\n-g (Genome Size) hs for Homo sapiens\n-t treatment IP file\n-c control input file\n-f BAM format\n–nomodel (used here as this is a small dataset)\n\n# check in correct workspace (ChIP-seq_workshop)\nmkdir macs2_results\n# Replicate 1\nmacs2 callpeak -t bt2_out/CTCF_Rep1_filtered.bam \\\n  -c bt2_out/Input_Control_filtered.bam \\\n  -f BAM -g hs -n CTCF_Rep1 --nomodel \\\n  --outdir macs2_results/\n\n# Replicate 2\nmacs2 callpeak -t bt2_out/CTCF_Rep2_filtered.bam \\\n  -c bt2_out/Input_Control_filtered.bam \\\n  -f BAM -g hs -n CTCF_Rep2 --nomodel \\\n  --outdir macs2_results/\nOnce we have called our peaks we can add these to our IGV session, but first lets start the next step running, we will examine the sequence at our peaks for specific motifs.",
-    "crumbs": [
-      "Analysis"
-    ]
-  },
-  {
-    "objectID": "04_Analysis.html#homer",
-    "href": "04_Analysis.html#homer",
-    "title": "HTS data analysis (ChIP-seq)",
-    "section": "HOMER",
-    "text": "HOMER\nWe will just run this on our first replicate, we are using a script from the HOMER suite of tools, we will select the top 500 peaks to speed things up.\nsort -k9,9nr macs2_results/CTCF_Rep1_peaks.narrowPeak | head -n 500 &gt; macs2_results/CTCF_Rep1_top500_peaks.narrowPeak\nIt requires a FASTA file and parsed folder, we will just create a symbolic link to these;\nln -s /home/genomes/human/hg38/hg38.fa .\nln -s PATHTO/preparsed .\nThis is alspo available here; [NEED TO ADD THIS]\n-size 200 limit -mask repeats\nfindMotifsGenome.pl macs2_results/CTCF_Rep1_top500_peaks.narrowPeak hg38.fa -preparsedDir preparsed/ homer_results/ -size 200 -mask -p 4\nThis generates a html report, ‘homerResults.html’, we should see CTCF as our best match.\n\nWhile that’s running lets go back and look at out peak files in IGV.",
-    "crumbs": [
-      "Analysis"
+      "Processing Data"
     ]
   },
   {
@@ -184,11 +180,11 @@
     ]
   },
   {
-    "objectID": "02_Processing_data.html#back-to-qc",
-    "href": "02_Processing_data.html#back-to-qc",
-    "title": "Intro To ChIP-Seq",
-    "section": "back to QC",
-    "text": "back to QC\nOnce we have performed the trimming its a good idea to re-run out Fastqc and Multiqc to make sure the trimmed data",
+    "objectID": "02_Processing_data.html#qc-on-trimmed-data",
+    "href": "02_Processing_data.html#qc-on-trimmed-data",
+    "title": "HTS data analysis (ChIP-seq)",
+    "section": "QC on Trimmed Data",
+    "text": "QC on Trimmed Data\nOnce we have performed the trimming it’s a good idea to re-run our FastQC and MultiQC to make sure the trimmed data is as expected and resolves any issues.\nWe can re-run MultiQC while adding the -f (force) argument to override our previous report and –fullnames to not clean our sample names and include the trimmed data.\nmultiqc --fullnames -f .\nLink to updated reports  NEED TO ADD THIS\nHopefully the cleaned data is now passing each section or atleast receiving a warning rather than a fail. Note I have subsampled a GC rich chromosome. Remember these tests are not absolute and depend on the specific data.",
     "crumbs": [
       "Processing Data"
     ]
@@ -204,6 +200,16 @@
     ]
   },
   {
+    "objectID": "02_Processing_data.html#sam-format",
+    "href": "02_Processing_data.html#sam-format",
+    "title": "HTS data analysis (ChIP-seq)",
+    "section": "SAM Format",
+    "text": "SAM Format\nSequence Alignment/Map (SAM) files contain our alignment positions as well as columns contaning information on the quality of the alignment, mismatches, the number of times a read mapped, mapping of paired ends and other custom flags and statistics.\nSee the Docs for the full specification.\n[SAM diagram here] NEED TO ADD THIS\nLet’s take a look at one of our SAM files.\nsamtools view  bt2_out/CTCF_Rep1.sam | less\nEach alignment contains a SAM flag which encodes information, this can be used for downstream filtering or reporting.",
+    "crumbs": [
+      "Processing Data"
+    ]
+  },
+  {
     "objectID": "02_Processing_data.html#samtools",
     "href": "02_Processing_data.html#samtools",
     "title": "HTS data analysis (ChIP-seq)",
@@ -214,33 +220,43 @@
     ]
   },
   {
-    "objectID": "02_Processing_data.html#section",
-    "href": "02_Processing_data.html#section",
-    "title": "Intro To ChIP-Seq",
-    "section": "",
-    "text": "BigWig Bedgraph\nstop at the point of visualisation\n\n\n Challenge:\n\nchallenge text\n\n\nSolution\n\n\nSolution. \n\n Solution:\n\nsolution text\n\n\n\n\n\n Key points",
+    "objectID": "02_Processing_data.html#coverage-tracks",
+    "href": "02_Processing_data.html#coverage-tracks",
+    "title": "HTS data analysis (ChIP-seq)",
+    "section": "Coverage Tracks",
+    "text": "Coverage Tracks\nTechnically we can view our BAM files in a genome browser (right down to the individual base calls), but despite being compressed these files are still large and not easily view-able, they simply contain all of our alignments so make no account for sequencing depth. We want to convert our BAMs into a binned format so we can view it as a coverage track.\nBedgraph files are human readable and contain continuous coordinate data with value scores, BigWig contain the same information in compressed binary format and are excellent for genome browsers.\nTo create out bigWig tracks we are using bamCoverage which is a part of the DeepTools package of tools.\nMultiple methods of normalization as available, here we are using Bins Per Million (BPM) to handle read depth, we are selecting a bin or window size of 10.\nbamCoverage \\\n  -b bt2_out/CTCF_Rep1_filtered.bam \\\n  -o bt2_out/CTCF_Rep1.bw \\\n  --binSize 10 \\\n  --normalizeUsing BPM \\\n  --numberOfProcessors 4\n\nbamCoverage -b bt2_out/CTCF_Rep2_filtered.bam -o bt2_out/CTCF_Rep2.bw --binSize 10 --normalizeUsing BPM --numberOfProcessors 4\nbamCoverage -b bt2_out/Input_Control_filtered.bam -o bt2_out/Input_Control.bw --binSize 10 --normalizeUsing BPM --numberOfProcessors 4\nIn the next section we will visualise our bigWig files in IGV, it is also possible to upload your tracks to online genome browsers such as UCSC, ensembl or the IGV web app.\n\n\n Key points\n\n\nHow to assess FASTQ quality\nWhen and what to Trim\nAlign to the correct reference\nAlignments are in SAM/BAM format\nFiltering based on SAM Flags and MAPQ Scores\nCoverage Track formats",
     "crumbs": [
       "Processing Data"
     ]
   },
   {
-    "objectID": "03_Visualisation.html",
-    "href": "03_Visualisation.html",
-    "title": "Intro To ChIP-Seq",
+    "objectID": "01_Getting_started.html",
+    "href": "01_Getting_started.html",
+    "title": "HTS data analysis (ChIP-seq)",
     "section": "",
-    "text": "challenge text\n\n\nSolution\n\n\nSolution. \n\nsolution text",
+    "text": "ChIP-seq (Chromatin immunoprecipitation followed by sequencing) is a lab based method to identify DNA-binding regions of specific proteins, often looking at either histone modifications or transcription factor binding sites, while the initial steps for these are the same, peak calling and downstream analysis will differ.",
     "crumbs": [
-      "Visualisation"
+      "Getting Started"
     ]
   },
   {
-    "objectID": "03_Visualisation.html#igv",
-    "href": "03_Visualisation.html#igv",
+    "objectID": "01_Getting_started.html#getting-started",
+    "href": "01_Getting_started.html#getting-started",
     "title": "HTS data analysis (ChIP-seq)",
-    "section": "IGV",
-    "text": "IGV\nOpen IGV on your own machines, before adding any files the first step is to select the relevant genome in the top left, this should already be set to GRCh38/hg38 (changing this will clear the entire view), you can navigate using the chromosome tab or searching for a specific loci. You can also drag the curser along the top ruler to select a region or use the chromosome to navigate, you can zoom in and out using the top right scale. Along the bottom we can see gene annotations, we can add custom BED files here if needed.\n[diagram explaining windows in igv]",
+    "section": "",
+    "text": "ChIP-seq (Chromatin immunoprecipitation followed by sequencing) is a lab based method to identify DNA-binding regions of specific proteins, often looking at either histone modifications or transcription factor binding sites, while the initial steps for these are the same, peak calling and downstream analysis will differ.",
     "crumbs": [
-      "Visualisation"
+      "Getting Started"
+    ]
+  },
+  {
+    "objectID": "01_Getting_started.html#connecting-to-the-server",
+    "href": "01_Getting_started.html#connecting-to-the-server",
+    "title": "HTS data analysis (ChIP-seq)",
+    "section": "Connecting to the Server",
+    "text": "Connecting to the Server\nToday, we will connect to one of the DRP servers to start our Linux journey. Connecting to the server is dependent on the machine you are working with. To connect\n\nBoth Linux and Mac have a “Terminal”, which is command line and can connect to a server using ssh. By typing in the following in your terminal, you can easily connect to the DRP server.\nReplace &lt;UUN&gt; by your own UUN or username.\n\nssh &lt;UUN&gt;@bifx-core1.bio.ed.ac.uk\n\nFor Windows, a tool like MobaXTerm needs to be installed to be able to connect to a server easily. Connecting uses ssh in this case as well. Take a look at the MobaXTerm demo to learn how to connect using ssh. Make sure to use you UUN as your username and the server link as follow:\n\nbifx-core1.bio.ed.ac.uk\nYou might be asked if you trust the server, make sure to answer yes. Once you’ve entered your password you should connect to the server and see something like the following:\nWelcome to Ubuntu 24.04.4 LTS (GNU/Linux 6.8.0-117-generic x86_64)\n\n * Documentation:  https://help.ubuntu.com\n * Management:     https://landscape.canonical.com\n * Support:        https://ubuntu.com/pro\n################################################################################\nTHIS DEVICE IS PART OF A PRIVATE NETWORK.\n\nUnauthorised access or use of this equipment is prohibited \nand constitutes an offence under the Computer Misuse Act 1990.\nIf you are not authorised to use this system, terminate this \nsession now.\n\nAll activity on this system is monitored and recorded.\n\nPlease direct any queries to IS.Helpline@ed.ac.uk.\n\n################################################################################\n&lt;UUN&gt;@bifx-core1:~$\nThis prompt shows that you are logged in to the bifx-core1 bioinformatics server, and that you are in your home directory (which is referred to using the ~ character on Linux systems).\nPlease see our website for more specific instructions on using the DRP-HCB bioinformatics servers.",
+    "crumbs": [
+      "Getting Started"
     ]
   },
   {
@@ -264,6 +280,16 @@
     ]
   },
   {
+    "objectID": "01_Getting_started.html#fastq-data",
+    "href": "01_Getting_started.html#fastq-data",
+    "title": "HTS data analysis (ChIP-seq)",
+    "section": "FASTQ Data",
+    "text": "FASTQ Data\nThe FASTQ data used in this workshop has already been retrieved from ENCODE, for the purpose of this workshop it has been sub sampled to mostly map to a single chromosome, the full data sets are available on ENCODE here.\nFor reference, it is ChIP-Seq on Transcription Factor (TF) CTCF using human K562 cell line (chronic myelogenous leukemia), CTCF (CCCTC-binding factor) is a highly conserved zinc finger protein involved in 3D genome organisation and promoter enhancer interactions. There are two IP replicates and a single shared control (background input) sample, this is single end data.\n\n\n\nAccession\nFileName\nCondition\nReplicate\n\n\n\n\nENCFF001HTO\nCTCF_Rep1.fastq.gz\nIP\nOne\n\n\nENCFF001HTP\nCTCF_Rep2.fastq.gz\nIP\nTwo\n\n\nENCFF001HTT\nInput_Control.fastq.gz\nInput\nOne\n\n\n\nWe will create a symbolic link to the data in our own project folders, storing it in a fastq folder;\ncd ChIP-seq_workshop\nmkdir fastq\nln -s path_to_data/*fastq.gz fastq/.  *NEED TO ADD THIS*\nMD5SUM?",
+    "crumbs": [
+      "Getting Started"
+    ]
+  },
+  {
     "objectID": "01_Getting_started.html#fastq-format",
     "href": "01_Getting_started.html#fastq-format",
     "title": "HTS data analysis (ChIP-seq)",
@@ -274,93 +300,10 @@
     ]
   },
   {
-    "objectID": "02_Processing_data.html#fastq-screen-dont-really-need",
-    "href": "02_Processing_data.html#fastq-screen-dont-really-need",
+    "objectID": "intro_chip_26.html",
+    "href": "intro_chip_26.html",
     "title": "Intro To ChIP-Seq",
-    "section": "Fastq screen? dont really need?",
-    "text": "Fastq screen? dont really need?",
-    "crumbs": [
-      "Processing Data"
-    ]
-  },
-  {
-    "objectID": "02_Processing_data.html#qc-on-trimmed-data",
-    "href": "02_Processing_data.html#qc-on-trimmed-data",
-    "title": "HTS data analysis (ChIP-seq)",
-    "section": "QC on Trimmed Data",
-    "text": "QC on Trimmed Data\nOnce we have performed the trimming it’s a good idea to re-run our FastQC and MultiQC to make sure the trimmed data is as expected and resolves any issues.\nWe can re-run MultiQC while adding the -f (force) argument to override our previous report and –fullnames to not clean our sample names and include the trimmed data.\nmultiqc --fullnames -f .\nLink to updated reports  NEED TO ADD THIS\nHopefully the cleaned data is now passing each section or atleast receiving a warning rather than a fail. Note I have subsampled a GC rich chromosome. Remember these tests are not absolute and depend on the specific data.",
-    "crumbs": [
-      "Processing Data"
-    ]
-  },
-  {
-    "objectID": "02_Processing_data.html#sam-format",
-    "href": "02_Processing_data.html#sam-format",
-    "title": "HTS data analysis (ChIP-seq)",
-    "section": "SAM Format",
-    "text": "SAM Format\nSequence Alignment/Map (SAM) files contain our alignment positions as well as columns contaning information on the quality of the alignment, mismatches, the number of times a read mapped, mapping of paired ends and other custom flags and statistics.\nSee the Docs for the full specification.\n[SAM diagram here] NEED TO ADD THIS\nLet’s take a look at one of our SAM files.\nsamtools view  bt2_out/CTCF_Rep1.sam | less\nEach alignment contains a SAM flag which encodes information, this can be used for downstream filtering or reporting.",
-    "crumbs": [
-      "Processing Data"
-    ]
-  },
-  {
-    "objectID": "02_Processing_data.html#coverage-tracks",
-    "href": "02_Processing_data.html#coverage-tracks",
-    "title": "HTS data analysis (ChIP-seq)",
-    "section": "Coverage Tracks",
-    "text": "Coverage Tracks\nTechnically we can view our BAM files in a genome browser (right down to the individual base calls), but despite being compressed these files are still large and not easily view-able, they simply contain all of our alignments so make no account for sequencing depth. We want to convert our BAMs into a binned format so we can view it as a coverage track.\nBedgraph files are human readable and contain continuous coordinate data with value scores, BigWig contain the same information in compressed binary format and are excellent for genome browsers.\nTo create out bigWig tracks we are using bamCoverage which is a part of the DeepTools package of tools.\nMultiple methods of normalization as available, here we are using Bins Per Million (BPM) to handle read depth, we are selecting a bin or window size of 10.\nbamCoverage \\\n  -b bt2_out/CTCF_Rep1_filtered.bam \\\n  -o bt2_out/CTCF_Rep1.bw \\\n  --binSize 10 \\\n  --normalizeUsing BPM \\\n  --numberOfProcessors 4\n\nbamCoverage -b bt2_out/CTCF_Rep2_filtered.bam -o bt2_out/CTCF_Rep2.bw --binSize 10 --normalizeUsing BPM --numberOfProcessors 4\nbamCoverage -b bt2_out/Input_Control_filtered.bam -o bt2_out/Input_Control.bw --binSize 10 --normalizeUsing BPM --numberOfProcessors 4\nIn the next section we will visualise our bigWig files in IGV, it is also possible to upload your tracks to online genome browsers such as UCSC, ensembl or the IGV web app.\n\n\n Key points\n\n\nHow to assess FASTQ quality\nWhen and what to Trim\nAlign to the correct reference\nAlignments are in SAM/BAM format\nFiltering based on SAM Flags and MAPQ Scores\nCoverage Track formats",
-    "crumbs": [
-      "Processing Data"
-    ]
-  },
-  {
-    "objectID": "03_Visualisation.html#loading-tracks",
-    "href": "03_Visualisation.html#loading-tracks",
-    "title": "HTS data analysis (ChIP-seq)",
-    "section": "Loading Tracks",
-    "text": "Loading Tracks\nUsing your web directory, navigate to the three bigWigs files (ending ‘.bw’), you can either download your data or copy the link address and then within IGV select FILE/Load from File Or Load from URL, additionally you can simply drag and drop files/links into the main IGV window to view them.\n[diagram with bw tracks]\nClick and hold on a track to move left and right, or right click to see options available for each track, on the left panel you can see track information, it is possible to select multiple tracks here.\nWe expect our input to look relatively flat, with peaks throughout or ChIP data, hopefully consistent between replicates. Take some time to navigate the genome, play around with different options for the tracks and have a closer look at chromosome 19, later we will run peak calling and view these in IGV but its always good to examine the data at the earliest opportunity.\nTry adding a BAM track (easiest to use URL for this), you’ll need to zoom in close to see anything, notice IGV create a basic track for us, does this look the same as your bigWig? Have a very lose look at the alignments, what do the different coloured bands mean?\n[diagram with BAM]\nKeep this open for now, we will come back to it later.",
-    "crumbs": [
-      "Visualisation"
-    ]
-  },
-  {
-    "objectID": "04_Analysis.html#analysis",
-    "href": "04_Analysis.html#analysis",
-    "title": "HTS data analysis (ChIP-seq)",
     "section": "",
-    "text": "Previously we assessed the quality of the sequencing and alignments but how about the success of our actual experiment?",
-    "crumbs": [
-      "Analysis"
-    ]
-  },
-  {
-    "objectID": "04_Analysis.html#visually-inspect-peak-files",
-    "href": "04_Analysis.html#visually-inspect-peak-files",
-    "title": "HTS data analysis (ChIP-seq)",
-    "section": "Visually Inspect Peak Files",
-    "text": "Visually Inspect Peak Files\nGo back to your web browser and navigate to the macs2_results, here we want to download our ‘.narrowPeaks’ files\nThe columns are as follows:\n\nChromosome\nStart\nEnd\nIterative id given by MACS2\nInteger score for display\nStrand (irrelevant in this case)\nFold-change (fold enrichment for this peak summit against random Poisson distribution with local lambda)\nlog10 P-value (e.g., 17.68 is 1 x 10-17)\nlog10 Q-value from Benjamini–Hochberg–Yekutieli procedure\nRelative summit position to peak start\n\n[diagram in IGV with peaks added]",
-    "crumbs": [
-      "Analysis"
-    ]
-  },
-  {
-    "objectID": "04_Analysis.html#optional-advanced-excercise",
-    "href": "04_Analysis.html#optional-advanced-excercise",
-    "title": "Intro To ChIP-Seq",
-    "section": "OPTIONAL ADVANCED EXCERCISE ?",
-    "text": "OPTIONAL ADVANCED EXCERCISE ?\ncurrent idea is histone data with pre-processed bam, get them to re-run peak calling –broad and look at data, maybe evaluate data somehow with deeptools\nor get them to process some other data from scratch\n\n\n Challenge:\n\nchallenge text\n\n\nSolution\n\n\nSolution. \n\n Solution:\n\nsolution text\n\n\n\n\n\n Key points",
-    "crumbs": [
-      "Analysis"
-    ]
-  },
-  {
-    "objectID": "04_Analysis.html#optional-excercise",
-    "href": "04_Analysis.html#optional-excercise",
-    "title": "HTS data analysis (ChIP-seq)",
-    "section": "Optional Excercise",
-    "text": "Optional Excercise\nRetrieve some FASTQ data (possibly from the previous workshop), perform trimming if needed and map to the relevant reference genome,",
-    "crumbs": [
-      "Analysis"
-    ]
+    "text": "dump general notes here;\nBioinformatics core at the Discovery Research Platform for Hidden Cell Biology, today we are building on skills learned from previous sessions, now looking specifically at ChIP-Seq data and considering it’s experimental design, particularly the use of input controls and the importance of replicates. We will briefly QC our raw reads, before looking at alignment and understanding those outputs i.e. what makes a “good” alignment and what to consider filtering. Downstream,we will perform peak calling and understand how to explore regions of interest. Running through this will be standard visualisation techniques to explore tracks from the data in a genome browser. Finally, looking at specific tools to measure the success of the actual experiment.\n\n\n Challenge:\n\nchallenge text\n\n\nSolution\n\n\nSolution. \n\n Solution:\n\nsolution text\n\n\n\n\n\n Key points"
   }
 ]
