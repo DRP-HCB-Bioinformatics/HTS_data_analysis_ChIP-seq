@@ -198,7 +198,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#homer" id="toc-homer" class="nav-link" data-scroll-target="#homer">HOMER</a></li>
   <li><a href="#visually-inspect-peak-files" id="toc-visually-inspect-peak-files" class="nav-link" data-scroll-target="#visually-inspect-peak-files">Visually Inspect Peak Files</a></li>
   <li><a href="#deeptools" id="toc-deeptools" class="nav-link" data-scroll-target="#deeptools">DeepTools</a></li>
-  <li><a href="#optional-excercise" id="toc-optional-excercise" class="nav-link" data-scroll-target="#optional-excercise">Optional Excercise</a></li>
+  <li><a href="#optional-exercise" id="toc-optional-exercise" class="nav-link" data-scroll-target="#optional-exercise">Optional Exercise</a></li>
   </ul>
 </nav>
     </div>
@@ -252,25 +252,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">-f</span> BAM <span class="at">-g</span> hs <span class="at">-n</span> CTCF_Rep2 <span class="at">--nomodel</span> <span class="dt">\</span></span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">--outdir</span> macs2_results/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Once we have called our peaks we can add these to our IGV session, but first lets start the next step running, we will examine the sequence at our peaks for specific motifs.</p>
-</section>
-<section id="homer" class="level2">
-<h2 class="anchored" data-anchor-id="homer">HOMER</h2>
-<p>We will just run this on our first replicate, we are using a script from the HOMER suite of tools, we will select the top 500 peaks to speed things up.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span> <span class="at">-k9,9nr</span> macs2_results/CTCF_Rep1_peaks.narrowPeak <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 500 <span class="op">&gt;</span> macs2_results/CTCF_Rep1_top500_peaks.narrowPeak</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>It requires a FASTA file and parsed folder, we will just create a symbolic link to these;</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> /home/genomes/human/hg38/hg38.fa .</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> PATHTO/preparsed .</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>This is alspo available here; [NEED TO ADD THIS]</p>
-<p>-size 200 limit -mask repeats</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">findMotifsGenome.pl</span> macs2_results/CTCF_Rep1_top500_peaks.narrowPeak hg38.fa <span class="at">-preparsedDir</span> preparsed/ homer_results/ <span class="at">-size</span> 200 <span class="at">-mask</span> <span class="at">-p</span> 4</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>This generates a html report, ‘homerResults.html’, we should see CTCF as our best match.</p>
-<p><img src="images/homer.png" class="img-fluid" width="599"></p>
-<p>While that’s running lets go back and look at out peak files in IGV.</p>
-</section>
-<section id="visually-inspect-peak-files" class="level2">
-<h2 class="anchored" data-anchor-id="visually-inspect-peak-files">Visually Inspect Peak Files</h2>
-<p>Go back to your web browser and navigate to the macs2_results, here we want to download our ‘.narrowPeaks’ files</p>
-<p>The columns are as follows:</p>
+<p>These are in .narrowPeaks files, the columns are as follows:</p>
 <ul>
 <li>Chromosome</li>
 <li>Start</li>
@@ -283,11 +265,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>log10 Q-value from Benjamini–Hochberg–Yekutieli procedure</li>
 <li>Relative summit position to peak start</li>
 </ul>
+</section>
+<section id="homer" class="level2">
+<h2 class="anchored" data-anchor-id="homer">HOMER</h2>
+<p>We will just run this on our first replicate, we are using a script from the HOMER suite of tools, we will select the top 500 peaks to speed things up.</p>
+<p>Filtered sort by Q value</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span> <span class="at">-k9,9nr</span> macs2_results/CTCF_Rep1_peaks.narrowPeak <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 500 <span class="op">&gt;</span> macs2_results/CTCF_Rep1_top500_peaks.narrowPeak</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Homer requires a FASTA file and ‘preparsed’ folder, we will just create a symbolic link to these;</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> /home/genomes/human/hg38/hg38.fa .</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> /library/training/ASD/03_HTSDAC/preparsed .</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>-size 200 limit -mask repeats</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">findMotifsGenome.pl</span> macs2_results/CTCF_Rep1_top500_peaks.narrowPeak hg38.fa <span class="at">-preparsedDir</span> preparsed/ homer_results/ <span class="at">-size</span> 200 <span class="at">-mask</span> <span class="at">-p</span> 4</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Note, If running on own machine, it would be easiest to omit the ‘-preparsedDir preparsed/’ and this will build from your hg38.fa file.</p>
+<p>This generates a html report, ‘homerResults.html’, we should see CTCF as our best match.</p>
+<p><img src="images/homer.png" class="img-fluid" width="599"></p>
+<p>While that’s running lets go back and look at out peak files in IGV.</p>
+</section>
+<section id="visually-inspect-peak-files" class="level2">
+<h2 class="anchored" data-anchor-id="visually-inspect-peak-files">Visually Inspect Peak Files</h2>
+<p>Go back to your web browser and navigate to the macs2_results, here we want to download our ‘.narrowPeaks’ files</p>
 <p>[diagram in IGV with peaks added]</p>
+<p>Go back to the “peaks” you examined before, are the results what you expected? Can you see where the highest point of the peak is?</p>
 </section>
 <section id="deeptools" class="level2">
 <h2 class="anchored" data-anchor-id="deeptools">DeepTools</h2>
-<p>Deeptools contains some useful plotting tools to summarise our data, lets create a heatmap across our peaks, we can run this for all our samples, this requires a two step process.</p>
+<p>Deeptools contains some useful plotting tools to summarise our data, lets create a heatmap across our peaks to see how strong the signal is, we can run this for all our samples, this requires a two step process.</p>
 <ul>
 <li>referencePoint centre of peak</li>
 <li>a upstream distance from reference</li>
@@ -300,7 +302,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">-a</span> 2000 <span class="at">-b</span> 2000 <span class="dt">\</span></span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">-o</span> CTCF_multi_matrix.gz <span class="dt">\</span></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">-p</span> 4</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Once our matrix is created we can customise out plot</p>
+<p>Once the above matrix file is created we can plot and customise our heatmap, feel free to play around with the colorMap or any other <a href="https://deeptools.readthedocs.io/en/develop/content/tools/plotHeatmap.html">parameters</a>.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">plotHeatmap</span> <span class="at">-m</span> CTCF_multi_matrix.gz <span class="dt">\</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-out</span> CTCF_multi_heatmap.png <span class="dt">\</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--colorMap</span> Reds <span class="dt">\</span></span>
@@ -308,7 +310,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">--refPointLabel</span> <span class="st">"Peaks"</span> <span class="at">--regionsLabel</span> <span class="st">"Peaks"</span> <span class="dt">\</span></span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">--yAxisLabel</span> <span class="st">"Average signal (BPM)"</span> <span class="at">--xAxisLabel</span> <span class="st">"Distance from center (bp)"</span> <span class="at">--yAxisLabel</span> <span class="st">"Average signal (BPM)"</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><img src="images/CTCF_multi_heatmap.png" class="img-fluid" width="599"></p>
-<p>Deeptools offers a lot of plotting functions to assess short read data, take a look at the <a href="LINK">documention</a></p>
+<p>Deeptools offers a lot of plotting functions to assess short read data, take a look at the <a href="https://deeptools.readthedocs.io/en/develop/content/list_of_tools.html">List of Tools</a>, particularly those for QC and summaries, you should have the relevant files already.</p>
 <div class="key-points">
 <h2 class="anchored">
 <i class="fas fa-thumbtack"></i> Key points
@@ -321,9 +323,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>The commands in the workflow have been run one by one but basically forms the basis of a bash script, with a small amount of tweaking this could be modified to handle multiple samples simultaneously, this along with more sophisticated methods will be covered in a later workshop. While the steps for general bioinformatics pipelines are similar the tools and parameters used are specific to the data and experiment type.</p>
 </section>
-<section id="optional-excercise" class="level2">
-<h2 class="anchored" data-anchor-id="optional-excercise">Optional Excercise</h2>
-<p>Retrieve some FASTQ data (possibly from the previous workshop), perform trimming if needed and map to the relevant reference genome,</p>
+<section id="optional-exercise" class="level2">
+<h2 class="anchored" data-anchor-id="optional-exercise">Optional Exercise</h2>
+<p>Retrieve some short read FASTQ data (possibly from the previous workshop), perform trimming if needed and map to the relevant reference genome, consider if the aligner used is correct for that data and what implications this has for downstream processing. If performing peak calling consider whether broad peak calling more appropriate. If interested in RNA-Seq analyis see this <a href="https://swebb1.github.io/WACCBIP_RNA-seq_Workshop/lesson1_command_line.html">previous workshop</a>, please note it won’t be possible to follow this exactly as it was designed for a specific system but the steps taken will be the same.</p>
 
 
 </section>

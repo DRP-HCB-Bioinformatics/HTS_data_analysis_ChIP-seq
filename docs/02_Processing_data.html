@@ -195,7 +195,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#quality-control" id="toc-quality-control" class="nav-link active" data-scroll-target="#quality-control">Quality Control</a></li>
   <li><a href="#fastqc" id="toc-fastqc" class="nav-link" data-scroll-target="#fastqc">FastQC</a></li>
-  <li><a href="#fastq-screen" id="toc-fastq-screen" class="nav-link" data-scroll-target="#fastq-screen">Fastq screen</a></li>
   <li><a href="#multiqc" id="toc-multiqc" class="nav-link" data-scroll-target="#multiqc">MultiQC</a></li>
   <li><a href="#trimming" id="toc-trimming" class="nav-link" data-scroll-target="#trimming">Trimming</a></li>
   <li><a href="#qc-on-trimmed-data" id="toc-qc-on-trimmed-data" class="nav-link" data-scroll-target="#qc-on-trimmed-data">QC on Trimmed Data</a></li>
@@ -243,23 +242,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>FastQC generates a zip file as well as an html file for each input. The html file is the easiest file to view and contains several plots and tables that provide information about the quality of the data. The zip file contains the raw data used to generate the plots, which can be useful for further analysis or troubleshooting.</p>
 <p>Once this is finished you can view the reports via; https://bifx-core3.bio.ed.ac.uk/~username</p>
 <p>In your web browser, navigate to your workshop folder and the reports are under fastq ending with ’_fastqc.html’</p>
-<p>Pre compiled reports are also available <a href="">here</a> <em>NEED TO ADD THIS</em></p>
+<p>Pre compiled FastQC reports are also available <a href="https://bifx-core3.bio.ed.ac.uk/training/ASD/03_HTSDAC/reports/FastQC">here</a></p>
 <p>A reminder of what each section means can be found in the <a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/">FastQC docs</a></p>
 <p>Feel free to look through these but it’s generally easier to aggregate our reports into one, we can do with with MultiQC.</p>
-</section>
-<section id="fastq-screen" class="level2">
-<h2 class="anchored" data-anchor-id="fastq-screen">Fastq screen</h2>
-<p>dont really need/already covered?</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="multiqc" class="level2">
 <h2 class="anchored" data-anchor-id="multiqc">MultiQC</h2>
 <p>MultiQC provides a simple way to combine the results from multiple FastQC analyses into a single report, allowing you to assess the overall quality of a study and easily identify samples that may require further investigation.</p>
-<p>MultiQC is straightforward to use and can summarise results from dozens or even hundreds of samples in a single, easy-to-navigate report. Run multiqc on the fastq directory to combine the FastQC reports from both reads.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">multiqc</span> .</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>MultiQC is straightforward to use and can summarise results from dozens or even hundreds of samples in a single, easy-to-navigate report. It can also aggregate reports from multiple different tools, for example Fastq Screen for contamination, see <a href="https://drp-hcb-bioinformatics.github.io/High_throughput_sequencing_data/03_QC.html">previous workshop</a> for more details on this.</p>
+<p>Run Multiqc while still in the fastq directory to combine the FastQC reports from all samples.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">multiqc</span> .</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>You might need to refresh your browser to see this in the same space as your individual FastQC reports.</p>
 <p>Look through the report(s) and discuss what needs to be done.</p>
-<p><a href="">Preprocessed</a> <em>NEED TO ADD THIS</em></p>
+<p>A Pre-processed MultiQC report is available <a href="https://bifx-core3.bio.ed.ac.uk/training/ASD/03_HTSDAC/reports/multiqc_report.html">here</a>.</p>
 <div class="challenge">
 <h2 class="anchored">
 <i class="fas fa-pencil-alt"></i> Challenge:
@@ -286,31 +281,34 @@ Solution
 </section>
 <section id="trimming" class="level2">
 <h2 class="anchored" data-anchor-id="trimming">Trimming</h2>
-<p>There are multiple trimming tools available, today we will use <a href="">Trim Galore</a>, this is actually a wrapper for <a href="">Cutadapt</a>, see also <a href="https://github.com/usadellab/trimmomatic">Trimmomatic</a>.</p>
-<p>There are several different means of trimming data, by quality, length or by specific adapter sequence (or all of the abaove), this is carried out in a specific order. First reads are trimmed based on our chosen quality filter, then for adapter contamination and finally any reads below our minimum length are discarded.</p>
-<p>Trim Galore selects the correct adapter sequence for us, we are selecting a minimum phred quality of 20 and length of 20bp and a stringency of 3 which mean atleast 3 bases must match our adapter sequence before trimming. The cores argument determines how many CPUs are used, it is able to handle all samples in one command.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">trim_galore</span> <span class="at">--cores</span> 4 <span class="at">--fastqc</span> <span class="at">-q</span> 20 <span class="at">--length</span> 20 <span class="dt">\</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--stringency</span> 3 <span class="dt">\</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  CTCF_Rep1.fastq.gz <span class="dt">\</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  CTCF_Rep2.fastq.gz <span class="dt">\</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  Input_Control.fastq.gz</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>There are multiple trimming tools available, today we will use <a href="https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/">Trim Galore</a>, this is actually a wrapper for <a href="https://cutadapt.readthedocs.io/en/stable/">Cutadapt</a>, see also <a href="https://github.com/usadellab/trimmomatic">Trimmomatic</a>. If you plan to do a lot of short read analysis it is definitely worth familiarising yourself with Cutadapt.</p>
+<p>There are several different means of trimming data, by quality, length or by specific adapter sequence (or all of the above), this is carried out in a specific order. First reads are trimmed based on our chosen quality filter, then for adapter contamination and finally any reads below our minimum length are discarded.</p>
+<p>Trim Galore selects the correct adapter sequence for us, we are selecting a minimum phred quality of 20 and length of 20bp and a stringency of 3 which means atleast 3 bases must match our adapter sequence before trimming. The cores argument determines how many CPUs are used, it is able to handle all samples in one command.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">trim_galore</span> <span class="at">--cores</span> 4 <span class="at">--fastqc</span> <span class="at">-q</span> 20 <span class="at">--length</span> 20 <span class="dt">\</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--stringency</span> 3 <span class="dt">\</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  CTCF_Rep1.fastq.gz <span class="dt">\</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  CTCF_Rep2.fastq.gz <span class="dt">\</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  Input_Control.fastq.gz</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This generates new ‘trimmed’ FASTQ files as well as text reports (ending ’_trimming_report.txt’) but also runs FastQC for us on the trimmed data.</p>
+<p>Reports can be viewed as text files;</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">less</span> fastq/CTCF_Rep1.fastq.gz_trimming_report.txt </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="qc-on-trimmed-data" class="level2">
 <h2 class="anchored" data-anchor-id="qc-on-trimmed-data">QC on Trimmed Data</h2>
 <p>Once we have performed the trimming it’s a good idea to re-run our FastQC and MultiQC to make sure the trimmed data is as expected and resolves any issues.</p>
 <p>We can re-run MultiQC while adding the -f (force) argument to override our previous report and –fullnames to not clean our sample names and include the trimmed data.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">multiqc</span> <span class="at">--fullnames</span> <span class="at">-f</span> .</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Link to updated reports <a href=""></a> <em>NEED TO ADD THIS</em></p>
+<p>Link to updated <a href="https://bifx-core3.bio.ed.ac.uk/training/ASD/03_HTSDAC/reports/trimmed_multiqc_report.html">MultiQC report</a></p>
+<p>Individual pre-compiled FastQC reports are also available <a href="https://bifx-core3.bio.ed.ac.uk/training/ASD/03_HTSDAC/reports/FastQC_trim">here</a></p>
 <p>Hopefully the cleaned data is now passing each section or atleast receiving a warning rather than a fail. Note I have subsampled a GC rich chromosome. Remember these tests are not absolute and depend on the specific data.</p>
 </section>
 <section id="aligning-reads" class="level2">
 <h2 class="anchored" data-anchor-id="aligning-reads">Aligning reads</h2>
 <p>Now that we have our trimmed data, we can align our reads to our reference genome, we will use GRCh38/hg38, references are built from FASTA sequence files.</p>
 <p>We already have the relevant reference FASTA file available on the server, this also includes indexes needed for the main alignment tools, these are required for the running of most tools.</p>
-<p>If running on your own machine this can be obtained from</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">link</span> to fasta file/bt2 indexes  <span class="pp">*</span>NEED TO ADD THIS<span class="pp">*</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>If running on your own machine this can be obtained via;</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> http://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gunzip</span> hg38.fa.gz</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Today we will use <a href="https://bowtie-bio.sourceforge.net/bowtie2/index.shtml">bowtie2</a> but there are several popular short read alignment tools available (<a href="https://github.com/lh3/BWA/">BWA</a>, <a href="https://github.com/lh3/minimap2">miniMap2</a> <em>etc.</em>), these are generally interchangeable but for RNA-seq experiments it is strongly recommended to use <a href="https://github.com/alexdobin/STAR">STAR</a> as it is splice aware.</p>
 <p>We will point to the relevant index file but for reference this was created with;</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">### do not run</span></span>
@@ -375,7 +373,7 @@ Solution
 <h2 class="anchored">
 <i class="fas fa-pencil-alt"></i> Challenge:
 </h2>
-<p>How many reads mapped to replicate 2</p>
+<p>How many reads mapped to replicate 2?</p>
 <details>
 <summary>
 Solution
@@ -404,26 +402,33 @@ Solution
 <p><img src="images/multi.png" class="img-fluid" width="399"></p>
 <p>A key point is that different alignment tools handle multimap reads differently by default, this can be controlled by tool options but in our case bowtie2 has randomly selected a multimapped alignment, flagged it with a low <strong>MAPQ score</strong> and discarded other possible locations. Mapping Quality (MAPQ) predicts the likelihood the alignment is accurate.</p>
 <p>Looking back at our Bowtie2 Logs, we can see how many unique vs multimapped reads we have.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">less</span> bt2_out/CTCF_Rep2_bowtie2.log</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>779426 reads; of these: 779426 (100.00%) were unpaired; of these: 9167 (1.18%) aligned 0 times 546826 (70.16%) aligned exactly 1 time 223433 (28.67%) aligned &gt;1 times 98.82% overall alignment rate</p>
-<p>A note on duplicates, distinct from multimap reads are duplicates which all map to the same location, we cannot distinguish noise from genuine signal so it it generally not recommended to remove these, although it is possible to mark duplicates for downstream analysis.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">less</span> bt2_out/CTCF_Rep1_bowtie2.log</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>779426 reads; of these:</p>
+<p>779426 (100.00%) were unpaired; of these:</p>
+<pre><code>9167 (1.18%) aligned 0 times
+
+546826 (70.16%) aligned exactly 1 time
+
+223433 (28.67%) aligned &gt;1 times</code></pre>
+<p>98.82% overall alignment rate</p>
+<p>A note on duplicates, distinct from multimap reads are duplicates which all map to the same location, thsee are often PCR artifacts but we cannot distinguish noise from genuine signal so it it generally not recommended to remove these, although it is possible to mark duplicates for downstream analysis, this can be done with <a href="https://broadinstitute.github.io/picard/command-line-overview.html#MarkDuplicates">picard tools</a>.</p>
 <p>We’ve seen we can filter our reads using SAM Flags to count, this can also be useful for filtering out specific reads to exclude or that may be of interest to us. We can also combined multiple flags e.g.&nbsp;Unmapped (04) plus not primary alignment (256) = 260.</p>
 <p>A useful resource for this is <a href="https://broadinstitute.github.io/picard/explain-flags.html">explain flags</a></p>
-<p>A more efficient way to achieve this is by <em>MAPQ</em> score, here we are using -q 20 to filter based on MAPQ, this is filtering out low probability (1/100) alignments and unmapped reads.</p>
+<p>A more efficient way to achieve this is by <em>MAPQ</em> score, here we are using -q 20 to filter based on MAPQ, this is filtering out low probability (1/100) alignments and unmapped reads. Note that different aligners calculate MAPQ in completely different and often complex ways, so using any one set filter is not universal.</p>
 <p>Note we are saving the output as _filtered.bam, this is what we will us going forward so again we will index that file.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Rep 1</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-@</span> 4 <span class="at">-b</span> <span class="at">-q</span> 20 bt2_out/CTCF_Rep1.bam <span class="op">&gt;</span> bt2_out/CTCF_Rep1_filtered.bam</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> index bt2_out/CTCF_Rep1_filtered.bam</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Rep 2</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-@</span> 4 <span class="at">-b</span> <span class="at">-q</span> 20 bt2_out/CTCF_Rep2.bam <span class="op">&gt;</span> bt2_out/CTCF_Rep2_filtered.bam</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> index bt2_out/CTCF_Rep2_filtered.bam</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Input Control</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-@</span> 4 <span class="at">-b</span> <span class="at">-q</span> 20 bt2_out/Input_Control.bam <span class="op">&gt;</span> bt2_out/Input_Control_filtered.bam</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> index bt2_out/Input_Control_filtered.bam</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Rep 1</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-@</span> 4 <span class="at">-b</span> <span class="at">-q</span> 20 bt2_out/CTCF_Rep1.bam <span class="op">&gt;</span> bt2_out/CTCF_Rep1_filtered.bam</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> index bt2_out/CTCF_Rep1_filtered.bam</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Rep 2</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-@</span> 4 <span class="at">-b</span> <span class="at">-q</span> 20 bt2_out/CTCF_Rep2.bam <span class="op">&gt;</span> bt2_out/CTCF_Rep2_filtered.bam</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> index bt2_out/CTCF_Rep2_filtered.bam</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Input Control</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-@</span> 4 <span class="at">-b</span> <span class="at">-q</span> 20 bt2_out/Input_Control.bam <span class="op">&gt;</span> bt2_out/Input_Control_filtered.bam</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> index bt2_out/Input_Control_filtered.bam</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Take a look at your filtered file;</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> flagstat bt2_out/CTCF_Rep1_filtered.bam</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> flagstat bt2_out/CTCF_Rep1_filtered.bam</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>We now have 614,524 alignments after filtering</p>
 <p>For some genomes there are blacklisted regions available as annotations, these are problematic areas which can cause issues with alignments, it is not strictly necessary today but we could use these to filter out alignments that cover the specific genomics region defined in that coorindate <a href="https://genome.ucsc.edu/FAQ/FAQformat.html#format1">BED</a> file using <a href="https://bedtools.readthedocs.io/en/latest/">BedTools</a> for example.</p>
 <section id="coverage-tracks" class="level2">
@@ -432,15 +437,15 @@ Solution
 <p><a href="https://genome.ucsc.edu/goldenPath/help/bedgraph.html">Bedgraph</a> files are human readable and contain continuous coordinate data with value scores, <a href="https://genome.ucsc.edu/goldenPath/help/bigWig.html">BigWig</a> contain the same information in compressed binary format and are excellent for genome browsers.</p>
 <p>To create out bigWig tracks we are using <a href="https://deeptools.readthedocs.io/en/develop/content/tools/bamCoverage.html">bamCoverage</a> which is a part of the <a href="https://deeptools.readthedocs.io/en/latest/">DeepTools</a> package of tools.</p>
 <p>Multiple methods of normalization as available, here we are using Bins Per Million (BPM) to handle read depth, we are selecting a bin or window size of 10.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bamCoverage</span> <span class="dt">\</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-b</span> bt2_out/CTCF_Rep1_filtered.bam <span class="dt">\</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-o</span> bt2_out/CTCF_Rep1.bw <span class="dt">\</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">--binSize</span> 10 <span class="dt">\</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">--normalizeUsing</span> BPM <span class="dt">\</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">--numberOfProcessors</span> 4</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="ex">bamCoverage</span> <span class="at">-b</span> bt2_out/CTCF_Rep2_filtered.bam <span class="at">-o</span> bt2_out/CTCF_Rep2.bw <span class="at">--binSize</span> 10 <span class="at">--normalizeUsing</span> BPM <span class="at">--numberOfProcessors</span> 4</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="ex">bamCoverage</span> <span class="at">-b</span> bt2_out/Input_Control_filtered.bam <span class="at">-o</span> bt2_out/Input_Control.bw <span class="at">--binSize</span> 10 <span class="at">--normalizeUsing</span> BPM <span class="at">--numberOfProcessors</span> 4</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bamCoverage</span> <span class="dt">\</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-b</span> bt2_out/CTCF_Rep1_filtered.bam <span class="dt">\</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-o</span> bt2_out/CTCF_Rep1.bw <span class="dt">\</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">--binSize</span> 10 <span class="dt">\</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">--normalizeUsing</span> BPM <span class="dt">\</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">--numberOfProcessors</span> 4</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="ex">bamCoverage</span> <span class="at">-b</span> bt2_out/CTCF_Rep2_filtered.bam <span class="at">-o</span> bt2_out/CTCF_Rep2.bw <span class="at">--binSize</span> 10 <span class="at">--normalizeUsing</span> BPM <span class="at">--numberOfProcessors</span> 4</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="ex">bamCoverage</span> <span class="at">-b</span> bt2_out/Input_Control_filtered.bam <span class="at">-o</span> bt2_out/Input_Control.bw <span class="at">--binSize</span> 10 <span class="at">--normalizeUsing</span> BPM <span class="at">--numberOfProcessors</span> 4</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>In the next section we will visualise our bigWig files in <a href="https://igv.org/doc/desktop/#DownloadPage/">IGV</a>, it is also possible to upload your tracks to online genome browsers such as <a href="https://genome.ucsc.edu/">UCSC</a>, <a href="https://useast.ensembl.org/index.html">ensembl</a> or the <a href="https://igv.org/app/">IGV web app</a>.</p>
 <div class="key-points">
 <h2 class="anchored">

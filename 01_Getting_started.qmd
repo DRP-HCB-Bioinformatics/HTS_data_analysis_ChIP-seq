@@ -10,6 +10,10 @@ syntax-highlighting: ayu
 
 ## Getting Started
 
+Most of the steps carried out in this workshop could be applied to any short read sequencing workflow, today we are working with ChIP-seq data.
+
+## ChIP-seq
+
 ChIP-seq (Chromatin immunoprecipitation followed by sequencing) is a lab based method to identify DNA-binding regions of specific proteins, often looking at either histone modifications or transcription factor binding sites, while the initial steps for these are the same, peak calling and downstream analysis will differ.
 
 ![](images/chipseq_overall.png){width="299"}
@@ -128,15 +132,23 @@ For reference, it is ChIP-Seq on Transcription Factor (TF) *CTCF* using human K5
 | ENCFF001HTT | Input_Control.fastq.gz |  Input |   One    |
 
 
-We will create a symbolic link to the data in our own project folders, storing it in a fastq folder;
-
+We will create a fastq folder in our own workshop folders
 ``` bash
 cd ChIP-seq_workshop
 mkdir fastq
-ln -s path_to_data/*fastq.gz fastq/.  *NEED TO ADD THIS*
 ```
 
-MD5SUM?
+Create a symbolic link to the data 
+``` bash
+ln -s /library/training/ASD/03_HTSDAC/data/*fastq.gz fastq/.
+```
+
+Or if downloading to a local machine use;
+``` bash
+wget https://bifx-core3.bio.ed.ac.uk/training/ASD/03_HTSDAC/data/CTCF_Rep1.fastq.gz https://bifx-core3.bio.ed.ac.uk/training/ASD/03_HTSDAC/data/CTCF_Rep2.fastq.gz https://bifx-core3.bio.ed.ac.uk/training/ASD/03_HTSDAC/data/Input_Control.fastq.gz
+
+mv *fastq.gz test/.
+```
 
 ##  FASTQ Format 
 

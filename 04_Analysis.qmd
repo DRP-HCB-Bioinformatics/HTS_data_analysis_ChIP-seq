@@ -41,44 +41,7 @@ macs2 callpeak -t bt2_out/CTCF_Rep2_filtered.bam \
 Once we have called our peaks we can add these to our IGV session, but first lets start the next step running, we will examine the sequence at our peaks for specific motifs.
 
 
-## HOMER
-
-We will just run this on our first replicate, we are using a script from the HOMER suite of tools, we will select the top 500 peaks to speed things up.
-
-
-``` bash
-sort -k9,9nr macs2_results/CTCF_Rep1_peaks.narrowPeak | head -n 500 > macs2_results/CTCF_Rep1_top500_peaks.narrowPeak
-```
-
-It requires a FASTA file and parsed folder, we will just create a symbolic link to these;
-
-``` bash
-ln -s /home/genomes/human/hg38/hg38.fa .
-ln -s PATHTO/preparsed .
-```
-
-This is alspo available here;
-[NEED TO ADD THIS]
-
-
--size 200 limit
--mask repeats
-``` bash
-findMotifsGenome.pl macs2_results/CTCF_Rep1_top500_peaks.narrowPeak hg38.fa -preparsedDir preparsed/ homer_results/ -size 200 -mask -p 4
-```
-
-This generates a html report, 'homerResults.html', we should see CTCF as our best match.
-
-![](images/homer.png){width="599"}
-
-While that's running lets go back and look at out peak files in IGV.
-
-
-## Visually Inspect Peak Files
-
-Go back to your web browser and navigate to the macs2_results, here we want to download our '.narrowPeaks' files
-
-The columns are as follows:
+These are in .narrowPeaks files, the columns are as follows:
 
 - Chromosome
 - Start
@@ -92,12 +55,50 @@ The columns are as follows:
 - Relative summit position to peak start
 
 
+
+## HOMER
+
+We will just run this on our first replicate, we are using a script from the HOMER suite of tools, we will select the top 500 peaks to speed things up.
+
+Filtered sort by Q value
+``` bash
+sort -k9,9nr macs2_results/CTCF_Rep1_peaks.narrowPeak | head -n 500 > macs2_results/CTCF_Rep1_top500_peaks.narrowPeak
+```
+
+Homer requires a FASTA file and 'preparsed' folder, we will just create a symbolic link to these;
+
+``` bash
+ln -s /home/genomes/human/hg38/hg38.fa .
+ln -s /library/training/ASD/03_HTSDAC/preparsed .
+```
+
+-size 200 limit
+-mask repeats
+``` bash
+findMotifsGenome.pl macs2_results/CTCF_Rep1_top500_peaks.narrowPeak hg38.fa -preparsedDir preparsed/ homer_results/ -size 200 -mask -p 4
+```
+
+Note, If running on own machine, it would be easiest to omit the '-preparsedDir preparsed/' and this will build from your hg38.fa file.
+
+This generates a html report, 'homerResults.html', we should see CTCF as our best match.
+
+![](images/homer.png){width="599"}
+
+While that's running lets go back and look at out peak files in IGV.
+
+
+## Visually Inspect Peak Files
+
+Go back to your web browser and navigate to the macs2_results, here we want to download our '.narrowPeaks' files
+
 [diagram in IGV with peaks added]
+
+Go back to the "peaks" you examined before, are the results what you expected? Can you see where the highest point of the peak is?
 
 
 ## DeepTools
 
-Deeptools contains some useful plotting tools to summarise our data, lets create a heatmap across our peaks, we can run this for all our samples, this requires a two step process.
+Deeptools contains some useful plotting tools to summarise our data, lets create a heatmap across our peaks to see how strong the signal is, we can run this for all our samples, this requires a two step process.
 
 - referencePoint centre of peak
 - a upstream distance from reference
@@ -113,7 +114,7 @@ computeMatrix reference-point \
   -p 4
 ```
 
-Once our matrix is created we can customise out plot
+Once the above matrix file is created we can plot and customise our heatmap, feel free to play around with the colorMap or any other [parameters](https://deeptools.readthedocs.io/en/develop/content/tools/plotHeatmap.html).
 
 ``` bash
 plotHeatmap -m CTCF_multi_matrix.gz \
@@ -127,7 +128,7 @@ plotHeatmap -m CTCF_multi_matrix.gz \
 ![](images/CTCF_multi_heatmap.png){width="599"}
 
 
-Deeptools offers a lot of plotting functions to assess short read data, take a look at the [documention](LINK)
+Deeptools offers a lot of plotting functions to assess short read data, take a look at the [List of Tools](https://deeptools.readthedocs.io/en/develop/content/list_of_tools.html), particularly those for QC and summaries, you should have the relevant files already.
 
 
 ::: key-points
@@ -142,9 +143,9 @@ Deeptools offers a lot of plotting functions to assess short read data, take a l
 The commands in the workflow have been run one by one but basically forms the basis of a bash script, with a small amount of tweaking this could be modified to handle multiple samples simultaneously, this along with more sophisticated methods will be covered in a later workshop. While the steps for general bioinformatics pipelines are similar the tools and parameters used are specific to the data and experiment type.
   
 
-## Optional Excercise
+## Optional Exercise
 
-Retrieve some FASTQ data (possibly from the previous workshop), perform trimming if needed and map to the relevant reference genome, 
+Retrieve some short read FASTQ data (possibly from the previous workshop), perform trimming if needed and map to the relevant reference genome, consider if the aligner used is correct for that data and what implications this has for downstream processing. If performing peak calling consider whether broad peak calling more appropriate. If interested in RNA-Seq analyis see this [previous workshop](https://swebb1.github.io/WACCBIP_RNA-seq_Workshop/lesson1_command_line.html), please note it won't be possible to follow this exactly as it was designed for a specific system but the steps taken will be the same.
 
 
 

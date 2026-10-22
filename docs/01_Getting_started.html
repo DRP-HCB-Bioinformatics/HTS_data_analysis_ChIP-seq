@@ -194,6 +194,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#getting-started" id="toc-getting-started" class="nav-link active" data-scroll-target="#getting-started">Getting Started</a></li>
+  <li><a href="#chip-seq" id="toc-chip-seq" class="nav-link" data-scroll-target="#chip-seq">ChIP-seq</a></li>
   <li><a href="#connecting-to-the-server" id="toc-connecting-to-the-server" class="nav-link" data-scroll-target="#connecting-to-the-server">Connecting to the Server</a></li>
   <li><a href="#set-up-web-directory" id="toc-set-up-web-directory" class="nav-link" data-scroll-target="#set-up-web-directory">Set Up Web Directory</a></li>
   <li><a href="#set-up-workshop-directory" id="toc-set-up-workshop-directory" class="nav-link" data-scroll-target="#set-up-workshop-directory">Set up workshop directory</a></li>
@@ -227,6 +228,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="https://kit.fontawesome.com/ece750edd7.js" crossorigin="anonymous"></script>
 <section id="getting-started" class="level2">
 <h2 class="anchored" data-anchor-id="getting-started">Getting Started</h2>
+<p>Most of the steps carried out in this workshop could be applied to any short read sequencing workflow, today we are working with ChIP-seq data.</p>
+</section>
+<section id="chip-seq" class="level2">
+<h2 class="anchored" data-anchor-id="chip-seq">ChIP-seq</h2>
 <p>ChIP-seq (Chromatin immunoprecipitation followed by sequencing) is a lab based method to identify DNA-binding regions of specific proteins, often looking at either histone modifications or transcription factor binding sites, while the initial steps for these are the same, peak calling and downstream analysis will differ.</p>
 <p><img src="images/chipseq_overall.png" class="img-fluid" width="299"></p>
 </section>
@@ -335,11 +340,15 @@ Solution
 </tr>
 </tbody>
 </table>
-<p>We will create a symbolic link to the data in our own project folders, storing it in a fastq folder;</p>
+<p>We will create a fastq folder in our own workshop folders</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ChIP-seq_workshop</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> fastq</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> path_to_data/<span class="pp">*</span>fastq.gz fastq/.  <span class="pp">*</span>NEED TO ADD THIS<span class="pp">*</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>MD5SUM?</p>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> fastq</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Create a symbolic link to the data</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> /library/training/ASD/03_HTSDAC/data/<span class="pp">*</span>fastq.gz fastq/.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Or if downloading to a local machine use;</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://bifx-core3.bio.ed.ac.uk/training/ASD/03_HTSDAC/data/CTCF_Rep1.fastq.gz https://bifx-core3.bio.ed.ac.uk/training/ASD/03_HTSDAC/data/CTCF_Rep2.fastq.gz https://bifx-core3.bio.ed.ac.uk/training/ASD/03_HTSDAC/data/Input_Control.fastq.gz</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> <span class="pp">*</span>fastq.gz test/.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="fastq-format" class="level2">
 <h2 class="anchored" data-anchor-id="fastq-format">FASTQ Format</h2>
