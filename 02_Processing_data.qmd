@@ -1,5 +1,5 @@
 ---
-title: "Intro To ChIP-Seq"
+title: "HTS data analysis (ChIP-seq)"
 format: html
 syntax-highlighting: ayu
 ---

@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "Introduction to ChIP-Seq"
+  title: "HTS data analysis (ChIP-seq)"
   sidebar:
     contents:
       - href: index.qmd

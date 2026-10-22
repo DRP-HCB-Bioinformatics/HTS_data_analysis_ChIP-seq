@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Intro To ChIP-Seq – Introduction to ChIP-Seq</title>
+<title>HTS data analysis (ChIP-seq)</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -198,7 +198,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#homer" id="toc-homer" class="nav-link" data-scroll-target="#homer">HOMER</a></li>
   <li><a href="#visually-inspect-peak-files" id="toc-visually-inspect-peak-files" class="nav-link" data-scroll-target="#visually-inspect-peak-files">Visually Inspect Peak Files</a></li>
   <li><a href="#deeptools" id="toc-deeptools" class="nav-link" data-scroll-target="#deeptools">DeepTools</a></li>
-  <li><a href="#optional-excercise" id="toc-optional-excercise" class="nav-link" data-scroll-target="#optional-excercise">OPTIONAL EXCERCISE</a></li>
+  <li><a href="#optional-excercise" id="toc-optional-excercise" class="nav-link" data-scroll-target="#optional-excercise">Optional Excercise</a></li>
   </ul>
 </nav>
     </div>
@@ -207,7 +207,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Intro To ChIP-Seq</h1>
+<h1 class="title">HTS data analysis (ChIP-seq)</h1>
 </div>
 
 
@@ -308,6 +308,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">--refPointLabel</span> <span class="st">"Peaks"</span> <span class="at">--regionsLabel</span> <span class="st">"Peaks"</span> <span class="dt">\</span></span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">--yAxisLabel</span> <span class="st">"Average signal (BPM)"</span> <span class="at">--xAxisLabel</span> <span class="st">"Distance from center (bp)"</span> <span class="at">--yAxisLabel</span> <span class="st">"Average signal (BPM)"</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><img src="images/CTCF_multi_heatmap.png" class="img-fluid" width="599"></p>
+<p>Deeptools offers a lot of plotting functions to assess short read data, take a look at the <a href="LINK">documention</a></p>
 <div class="key-points">
 <h2 class="anchored">
 <i class="fas fa-thumbtack"></i> Key points
@@ -321,9 +322,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The commands in the workflow have been run one by one but basically forms the basis of a bash script, with a small amount of tweaking this could be modified to handle multiple samples simultaneously, this along with more sophisticated methods will be covered in a later workshop. While the steps for general bioinformatics pipelines are similar the tools and parameters used are specific to the data and experiment type.</p>
 </section>
 <section id="optional-excercise" class="level2">
-<h2 class="anchored" data-anchor-id="optional-excercise">OPTIONAL EXCERCISE</h2>
-<p>current idea is histone data with pre-processed bam, get them to re-run peak calling –broad and look at data, maybe evaluate data somehow with deeptools</p>
-<p>or get them to process some other data from scratch</p>
+<h2 class="anchored" data-anchor-id="optional-excercise">Optional Excercise</h2>
+<p>Retrieve some FASTQ data (possibly from the previous workshop), perform trimming if needed and map to the relevant reference genome,</p>
 
 
 </section>
