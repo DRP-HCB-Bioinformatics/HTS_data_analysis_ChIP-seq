@@ -185,7 +185,7 @@ Sequence Alignment/Map (SAM) files contain our alignment positions as well as co
 
 See the [Docs](https://samtools.github.io/hts-specs/SAMv1.pdf) for the full specification.
 
-![](images/sam_format.png){width="599", height="400"}
+![](images/sam_format.png){width="599"}
 <!--https://zyxue.github.io/2017/09/26/sam-format-example.html-->
 
 Let's take a look at one of our SAM files.

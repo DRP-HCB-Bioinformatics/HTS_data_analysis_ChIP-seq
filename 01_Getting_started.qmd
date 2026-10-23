@@ -77,7 +77,7 @@ mkdir ~/public_html
 Running 'cd' insures we are in our home space (although '~/' specifies this is the path to your home already).
 
 You should now be able to access files through 
-`https://bifx-core3.bio.ed.ac.uk/~<UUN>` replacing the <UUN> with your own UUN.
+`https://bifx-core3.bio.ed.ac.uk/~UUN` replacing the UUN with your own UUN.
 
 **Note:** This is open to the public, so do not link to all of your data here.
 
