@@ -413,7 +413,7 @@ Solution
 
 223433 (28.67%) aligned &gt;1 times</code></pre>
 <p>98.82% overall alignment rate</p>
-<p>A note on duplicates, distinct from multimap reads are duplicates which all map to the same location, thsee are often PCR artifacts but we cannot distinguish noise from genuine signal so it it generally not recommended to remove these, although it is possible to mark duplicates for downstream analysis, this can be done with <a href="https://broadinstitute.github.io/picard/command-line-overview.html#MarkDuplicates">picard tools</a>.</p>
+<p>A note on duplicates, distinct from multimap reads are duplicates which all map to the same location, these are often PCR artifacts but we cannot distinguish noise from genuine signal so it it generally not recommended to remove these, although it is possible to mark duplicates for downstream analysis, this can be done with <a href="https://broadinstitute.github.io/picard/command-line-overview.html#MarkDuplicates">picard tools</a>.</p>
 <p>We’ve seen we can filter our reads using SAM Flags to count, this can also be useful for filtering out specific reads to exclude or that may be of interest to us. We can also combined multiple flags e.g.&nbsp;Unmapped (04) plus not primary alignment (256) = 260.</p>
 <p>A useful resource for this is <a href="https://broadinstitute.github.io/picard/explain-flags.html">explain flags</a></p>
 <p>A more efficient way to achieve this is by <em>MAPQ</em> score, here we are using -q 20 to filter based on MAPQ, this is filtering out low probability (1/100) alignments and unmapped reads. Note that different aligners calculate MAPQ in completely different and often complex ways, so using any one set filter is not universal.</p>
