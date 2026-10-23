@@ -83,9 +83,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-713b0136666c1ca4047413a70816f99a.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-b629e5cb0aecc7c9cdf6c9d1f8bfbbe2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-b629e5cb0aecc7c9cdf6c9d1f8bfbbe2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-b629e5cb0aecc7c9cdf6c9d1f8bfbbe2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-96db90ed46136dc576a4b74167903618.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-96db90ed46136dc576a4b74167903618.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-96db90ed46136dc576a4b74167903618.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -237,7 +237,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="connecting-to-the-server" class="level2">
 <h2 class="anchored" data-anchor-id="connecting-to-the-server">Connecting to the Server</h2>
-<p>Today, we will connect to one of the DRP servers to start our Linux journey. Connecting to the server is dependent on the machine you are working with. To connect</p>
+<p>Today, we will connect to one of the DRP servers to start our ChIP-seq journey. Connecting to the server is dependent on the machine you are working with. To connect</p>
 <ul>
 <li>Both Linux and Mac have a “Terminal”, which is command line and can connect to a server using ssh. By typing in the following in your terminal, you can easily connect to the DRP server.<br>
 <em>Replace &lt;UUN&gt; by your own UUN or username.</em></li>
@@ -272,19 +272,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="set-up-web-directory" class="level2">
 <h2 class="anchored" data-anchor-id="set-up-web-directory">Set Up Web Directory</h2>
-<p>The majority of you will have already done this, but if not we will create a public_html directory in your home, this will allow us to view the files we create later on (after we link our project folder to it).</p>
+<p>Many of you might have previously set up a public_html directory, however if not, let’s create a public_html directory in your home. This will allow you to view files we create directly. To be able to easily access our file, we will link the project folder to the public_html.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> ~/public_html</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>‘cd’ insures we are in our home space although ‘~/’ specifies this is the path to your home anyway.</p>
-<p>This should now be visible at; https://bifx-core3.bio.ed.ac.uk/~username</p>
-<p>Remember, this is public so do not link to all of your data here.</p>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> ~/public_html</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Running ‘cd’ insures we are in our home space (although ‘~/’ specifies this is the path to your home already).</p>
+<p>You should now be able to access files through <code>https://bifx-core3.bio.ed.ac.uk/~&lt;UUN&gt;</code> replacing the <uun> with your own UUN.</uun></p>
+<p><strong>Note:</strong> This is open to the public, so do not link to all of your data here.</p>
 </section>
 <section id="set-up-workshop-directory" class="level2">
 <h2 class="anchored" data-anchor-id="set-up-workshop-directory">Set up workshop directory</h2>
 <p>Lets start by creating a new folder for this workshop in our home directory</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> ChIP-seq_workshop</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>We can now link this directory to our public page; double check this</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> ChIP-seq_workshop</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Now, We can link this directory to our public page;</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> ~/ChIP-seq_workshop ~/public_html/. </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="challenge">
 <h2 class="anchored">
@@ -342,10 +344,11 @@ Solution
 </table>
 <p>We will create a fastq folder in our own workshop folders</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ChIP-seq_workshop</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> fastq</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> fastq</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Create a symbolic link to the data</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> /library/training/ASD/03_HTSDAC/data/<span class="pp">*</span>fastq.gz fastq/.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Or if downloading to a local machine use;</p>
+<p>Or if you are working on another machine, download the data using the following commands.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://bifx-core3.bio.ed.ac.uk/training/ASD/03_HTSDAC/data/CTCF_Rep1.fastq.gz https://bifx-core3.bio.ed.ac.uk/training/ASD/03_HTSDAC/data/CTCF_Rep2.fastq.gz https://bifx-core3.bio.ed.ac.uk/training/ASD/03_HTSDAC/data/Input_Control.fastq.gz</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> <span class="pp">*</span>fastq.gz test/.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
