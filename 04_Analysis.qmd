@@ -92,8 +92,7 @@ While that's running lets go back and look at out peak files in IGV.
 
 Go back to your web browser and navigate to the macs2_results, here we want to download our '.narrowPeaks' files
 
-[diagram in IGV with peaks added]
-![](images/igv_tracks.png){width="100%" height="auto"}
+![](images/tracks_peaks.png){width="100%" height="auto"}
 
 Go back to the "peaks" you examined before, are the results what you expected? Can you see where the highest point of the peak is?
 
