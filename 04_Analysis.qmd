@@ -73,9 +73,10 @@ ln -s /library/training/ASD/03_HTSDAC/preparsed .
 ```
 
 -size 200 limit
+
 -mask repeats
 ``` bash
-findMotifsGenome.pl macs2_results/CTCF_Rep1_top500_peaks.narrowPeak hg38.fa -preparsedDir preparsed/ homer_results/ -size 200 -mask -p 4
+findMotifsGenome.pl macs2_results/CTCF_Rep1_top500_peaks.narrowPeak hg38.fa homer_results_test/ -preparsedDir preparsed -size 200 -mask -p 4
 ```
 
 Note, If running on own machine, it would be easiest to omit the '-preparsedDir preparsed/' and this will build from your hg38.fa file.

@@ -339,9 +339,11 @@ Solution
 <h2 class="anchored" data-anchor-id="sam-format">SAM Format</h2>
 <p>Sequence Alignment/Map (SAM) files contain our alignment positions as well as columns contaning information on the quality of the alignment, mismatches, the number of times a read mapped, mapping of paired ends and other custom flags and statistics.</p>
 <p>See the <a href="https://samtools.github.io/hts-specs/SAMv1.pdf">Docs</a> for the full specification.</p>
-<p>[SAM diagram here] <em>NEED TO ADD THIS</em></p>
+<p><img src="images/sam_format.png" class="img-fluid">{width=“599”, height=“400”} <!--https://zyxue.github.io/2017/09/26/sam-format-example.html--></p>
 <p>Let’s take a look at one of our SAM files.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view  bt2_out/CTCF_Rep1.sam <span class="kw">|</span> <span class="fu">less</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>To view the headers use;</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-h</span>  bt2_out/CTCF_Rep1.sam <span class="kw">|</span> <span class="fu">less</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Each alignment contains a <strong>SAM flag</strong> which encodes information, this can be used for downstream filtering or reporting.</p>
 </section>
 <section id="samtools" class="level2">
@@ -352,22 +354,22 @@ Solution
 <li>-@ specifices threads/CPUs</li>
 <li>-o Output is specified as a parameter</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Rep 1</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> sort <span class="at">-@</span> 4 <span class="at">-o</span> bt2_out/CTCF_Rep1.bam bt2_out/CTCF_Rep1.sam</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> index bt2_out/CTCF_Rep1.bam</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Rep 2</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> sort <span class="at">-@</span> 4 <span class="at">-o</span> bt2_out/CTCF_Rep2.bam bt2_out/CTCF_Rep2.sam</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> index bt2_out/CTCF_Rep2.bam</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Input Control</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> sort <span class="at">-@</span> 4 <span class="at">-o</span> bt2_out/Input_Control.bam bt2_out/Input_Control.sam</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> index bt2_out/Input_Control.bam</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Rep 1</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> sort <span class="at">-@</span> 4 <span class="at">-o</span> bt2_out/CTCF_Rep1.bam bt2_out/CTCF_Rep1.sam</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> index bt2_out/CTCF_Rep1.bam</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Rep 2</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> sort <span class="at">-@</span> 4 <span class="at">-o</span> bt2_out/CTCF_Rep2.bam bt2_out/CTCF_Rep2.sam</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> index bt2_out/CTCF_Rep2.bam</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Input Control</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> sort <span class="at">-@</span> 4 <span class="at">-o</span> bt2_out/Input_Control.bam bt2_out/Input_Control.sam</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> index bt2_out/Input_Control.bam</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Samtools Flagstat summarises the mapping rate for reads</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> flagstat bt2_out/CTCF_Rep1.bam</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> flagstat bt2_out/CTCF_Rep1.bam</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>We can see there are 779,426 reads, 770,259 of which mapped.</p>
 <p>Let’s confirm how many are unmapped, here we are filtering (-f) using the samflag for unmapped (04) and counting (-c) with samtools view</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-c</span> <span class="at">-f</span> 4 bt2_out/CTCF_Rep1.bam</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-c</span> <span class="at">-f</span> 4 bt2_out/CTCF_Rep1.bam</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>We should see 9,167 are unmapped, this was actually in our Bowtie2 log</p>
 <div class="challenge">
 <h2 class="anchored">
@@ -392,7 +394,7 @@ Solution
 </details>
 </div>
 <p>We can look at where our reads align with idxstats;</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> idxstats bt2_out/CTCF_Rep1.bam <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-E</span> <span class="st">'^chr[0-9XYM]+\b'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> idxstats bt2_out/CTCF_Rep1.bam <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-E</span> <span class="st">'^chr[0-9XYM]+\b'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>There are a lot of additional chromosomes contigs here so we’re just filtering out the main ones.</p>
 <p>The fist column is the chromosome, the second is its size and the third is the number of mapped reads, can you tell which chromosome has the most mapped reads?</p>
 </section>
@@ -402,7 +404,7 @@ Solution
 <p><img src="images/multi.png" class="img-fluid" width="399"></p>
 <p>A key point is that different alignment tools handle multimap reads differently by default, this can be controlled by tool options but in our case bowtie2 has randomly selected a multimapped alignment, flagged it with a low <strong>MAPQ score</strong> and discarded other possible locations. Mapping Quality (MAPQ) predicts the likelihood the alignment is accurate.</p>
 <p>Looking back at our Bowtie2 Logs, we can see how many unique vs multimapped reads we have.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">less</span> bt2_out/CTCF_Rep1_bowtie2.log</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">less</span> bt2_out/CTCF_Rep1_bowtie2.log</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>779426 reads; of these:</p>
 <p>779426 (100.00%) were unpaired; of these:</p>
 <pre><code>9167 (1.18%) aligned 0 times
@@ -416,19 +418,19 @@ Solution
 <p>A useful resource for this is <a href="https://broadinstitute.github.io/picard/explain-flags.html">explain flags</a></p>
 <p>A more efficient way to achieve this is by <em>MAPQ</em> score, here we are using -q 20 to filter based on MAPQ, this is filtering out low probability (1/100) alignments and unmapped reads. Note that different aligners calculate MAPQ in completely different and often complex ways, so using any one set filter is not universal.</p>
 <p>Note we are saving the output as _filtered.bam, this is what we will us going forward so again we will index that file.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Rep 1</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-@</span> 4 <span class="at">-b</span> <span class="at">-q</span> 20 bt2_out/CTCF_Rep1.bam <span class="op">&gt;</span> bt2_out/CTCF_Rep1_filtered.bam</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> index bt2_out/CTCF_Rep1_filtered.bam</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Rep 2</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-@</span> 4 <span class="at">-b</span> <span class="at">-q</span> 20 bt2_out/CTCF_Rep2.bam <span class="op">&gt;</span> bt2_out/CTCF_Rep2_filtered.bam</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> index bt2_out/CTCF_Rep2_filtered.bam</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Input Control</span></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-@</span> 4 <span class="at">-b</span> <span class="at">-q</span> 20 bt2_out/Input_Control.bam <span class="op">&gt;</span> bt2_out/Input_Control_filtered.bam</span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> index bt2_out/Input_Control_filtered.bam</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Rep 1</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-@</span> 4 <span class="at">-b</span> <span class="at">-q</span> 20 bt2_out/CTCF_Rep1.bam <span class="op">&gt;</span> bt2_out/CTCF_Rep1_filtered.bam</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> index bt2_out/CTCF_Rep1_filtered.bam</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Rep 2</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-@</span> 4 <span class="at">-b</span> <span class="at">-q</span> 20 bt2_out/CTCF_Rep2.bam <span class="op">&gt;</span> bt2_out/CTCF_Rep2_filtered.bam</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> index bt2_out/CTCF_Rep2_filtered.bam</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Input Control</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-@</span> 4 <span class="at">-b</span> <span class="at">-q</span> 20 bt2_out/Input_Control.bam <span class="op">&gt;</span> bt2_out/Input_Control_filtered.bam</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> index bt2_out/Input_Control_filtered.bam</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Take a look at your filtered file;</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> flagstat bt2_out/CTCF_Rep1_filtered.bam</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> flagstat bt2_out/CTCF_Rep1_filtered.bam</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>We now have 614,524 alignments after filtering</p>
 <p>For some genomes there are blacklisted regions available as annotations, these are problematic areas which can cause issues with alignments, it is not strictly necessary today but we could use these to filter out alignments that cover the specific genomics region defined in that coorindate <a href="https://genome.ucsc.edu/FAQ/FAQformat.html#format1">BED</a> file using <a href="https://bedtools.readthedocs.io/en/latest/">BedTools</a> for example.</p>
 <section id="coverage-tracks" class="level2">
@@ -437,15 +439,15 @@ Solution
 <p><a href="https://genome.ucsc.edu/goldenPath/help/bedgraph.html">Bedgraph</a> files are human readable and contain continuous coordinate data with value scores, <a href="https://genome.ucsc.edu/goldenPath/help/bigWig.html">BigWig</a> contain the same information in compressed binary format and are excellent for genome browsers.</p>
 <p>To create out bigWig tracks we are using <a href="https://deeptools.readthedocs.io/en/develop/content/tools/bamCoverage.html">bamCoverage</a> which is a part of the <a href="https://deeptools.readthedocs.io/en/latest/">DeepTools</a> package of tools.</p>
 <p>Multiple methods of normalization as available, here we are using Bins Per Million (BPM) to handle read depth, we are selecting a bin or window size of 10.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bamCoverage</span> <span class="dt">\</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-b</span> bt2_out/CTCF_Rep1_filtered.bam <span class="dt">\</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-o</span> bt2_out/CTCF_Rep1.bw <span class="dt">\</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">--binSize</span> 10 <span class="dt">\</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">--normalizeUsing</span> BPM <span class="dt">\</span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">--numberOfProcessors</span> 4</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="ex">bamCoverage</span> <span class="at">-b</span> bt2_out/CTCF_Rep2_filtered.bam <span class="at">-o</span> bt2_out/CTCF_Rep2.bw <span class="at">--binSize</span> 10 <span class="at">--normalizeUsing</span> BPM <span class="at">--numberOfProcessors</span> 4</span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="ex">bamCoverage</span> <span class="at">-b</span> bt2_out/Input_Control_filtered.bam <span class="at">-o</span> bt2_out/Input_Control.bw <span class="at">--binSize</span> 10 <span class="at">--normalizeUsing</span> BPM <span class="at">--numberOfProcessors</span> 4</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bamCoverage</span> <span class="dt">\</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-b</span> bt2_out/CTCF_Rep1_filtered.bam <span class="dt">\</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-o</span> bt2_out/CTCF_Rep1.bw <span class="dt">\</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">--binSize</span> 10 <span class="dt">\</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">--normalizeUsing</span> BPM <span class="dt">\</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">--numberOfProcessors</span> 4</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="ex">bamCoverage</span> <span class="at">-b</span> bt2_out/CTCF_Rep2_filtered.bam <span class="at">-o</span> bt2_out/CTCF_Rep2.bw <span class="at">--binSize</span> 10 <span class="at">--normalizeUsing</span> BPM <span class="at">--numberOfProcessors</span> 4</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="ex">bamCoverage</span> <span class="at">-b</span> bt2_out/Input_Control_filtered.bam <span class="at">-o</span> bt2_out/Input_Control.bw <span class="at">--binSize</span> 10 <span class="at">--normalizeUsing</span> BPM <span class="at">--numberOfProcessors</span> 4</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>In the next section we will visualise our bigWig files in <a href="https://igv.org/doc/desktop/#DownloadPage/">IGV</a>, it is also possible to upload your tracks to online genome browsers such as <a href="https://genome.ucsc.edu/">UCSC</a>, <a href="https://useast.ensembl.org/index.html">ensembl</a> or the <a href="https://igv.org/app/">IGV web app</a>.</p>
 <div class="key-points">
 <h2 class="anchored">

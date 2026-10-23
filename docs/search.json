@@ -34,7 +34,7 @@
     "href": "04_Analysis.html#homer",
     "title": "HTS data analysis (ChIP-seq)",
     "section": "HOMER",
-    "text": "HOMER\nWe will just run this on our first replicate, we are using a script from the HOMER suite of tools, we will select the top 500 peaks to speed things up.\nFiltered sort by Q value\nsort -k9,9nr macs2_results/CTCF_Rep1_peaks.narrowPeak | head -n 500 &gt; macs2_results/CTCF_Rep1_top500_peaks.narrowPeak\nHomer requires a FASTA file and ‘preparsed’ folder, we will just create a symbolic link to these;\nln -s /home/genomes/human/hg38/hg38.fa .\nln -s /library/training/ASD/03_HTSDAC/preparsed .\n-size 200 limit -mask repeats\nfindMotifsGenome.pl macs2_results/CTCF_Rep1_top500_peaks.narrowPeak hg38.fa -preparsedDir preparsed/ homer_results/ -size 200 -mask -p 4\nNote, If running on own machine, it would be easiest to omit the ‘-preparsedDir preparsed/’ and this will build from your hg38.fa file.\nThis generates a html report, ‘homerResults.html’, we should see CTCF as our best match.\n\nWhile that’s running lets go back and look at out peak files in IGV.",
+    "text": "HOMER\nWe will just run this on our first replicate, we are using a script from the HOMER suite of tools, we will select the top 500 peaks to speed things up.\nFiltered sort by Q value\nsort -k9,9nr macs2_results/CTCF_Rep1_peaks.narrowPeak | head -n 500 &gt; macs2_results/CTCF_Rep1_top500_peaks.narrowPeak\nHomer requires a FASTA file and ‘preparsed’ folder, we will just create a symbolic link to these;\nln -s /home/genomes/human/hg38/hg38.fa .\nln -s /library/training/ASD/03_HTSDAC/preparsed .\n-size 200 limit\n-mask repeats\nfindMotifsGenome.pl macs2_results/CTCF_Rep1_top500_peaks.narrowPeak hg38.fa homer_results_test/ -preparsedDir preparsed -size 200 -mask -p 4\nNote, If running on own machine, it would be easiest to omit the ‘-preparsedDir preparsed/’ and this will build from your hg38.fa file.\nThis generates a html report, ‘homerResults.html’, we should see CTCF as our best match.\n\nWhile that’s running lets go back and look at out peak files in IGV.",
     "crumbs": [
       "Analysis"
     ]
@@ -204,7 +204,7 @@
     "href": "02_Processing_data.html#sam-format",
     "title": "HTS data analysis (ChIP-seq)",
     "section": "SAM Format",
-    "text": "SAM Format\nSequence Alignment/Map (SAM) files contain our alignment positions as well as columns contaning information on the quality of the alignment, mismatches, the number of times a read mapped, mapping of paired ends and other custom flags and statistics.\nSee the Docs for the full specification.\n[SAM diagram here] NEED TO ADD THIS\nLet’s take a look at one of our SAM files.\nsamtools view  bt2_out/CTCF_Rep1.sam | less\nEach alignment contains a SAM flag which encodes information, this can be used for downstream filtering or reporting.",
+    "text": "SAM Format\nSequence Alignment/Map (SAM) files contain our alignment positions as well as columns contaning information on the quality of the alignment, mismatches, the number of times a read mapped, mapping of paired ends and other custom flags and statistics.\nSee the Docs for the full specification.\n{width=“599”, height=“400”} \nLet’s take a look at one of our SAM files.\nsamtools view  bt2_out/CTCF_Rep1.sam | less\nTo view the headers use;\nsamtools view -h  bt2_out/CTCF_Rep1.sam | less\nEach alignment contains a SAM flag which encodes information, this can be used for downstream filtering or reporting.",
     "crumbs": [
       "Processing Data"
     ]

@@ -185,15 +185,20 @@ Sequence Alignment/Map (SAM) files contain our alignment positions as well as co
 
 See the [Docs](https://samtools.github.io/hts-specs/SAMv1.pdf) for the full specification.
 
-
-[SAM diagram here] *NEED TO ADD THIS*
-
+![](images/sam_format.png){width="599", height="400"}
+<!--https://zyxue.github.io/2017/09/26/sam-format-example.html-->
 
 Let's take a look at one of our SAM files.
 
 ``` bash
 samtools view  bt2_out/CTCF_Rep1.sam | less
 ```
+
+To view the headers use;
+``` bash
+samtools view -h  bt2_out/CTCF_Rep1.sam | less
+```
+
 
 Each alignment contains a **SAM flag** which encodes information, this can be used for downstream filtering or reporting.
 
