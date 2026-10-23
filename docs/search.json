@@ -94,7 +94,7 @@
     "href": "index.html#environment",
     "title": "HTS data analysis (ChIP-seq)",
     "section": "Environment",
-    "text": "Environment\nFor the command line portion If you are using the DRP-HCB Bioinformatics server for this course then all of the data and software is already installed. If you are working through this course from a different Linux computer or server, please make sure the following tools are installed:\n\n\n Required software\n\n\nFastqc\nMultiqc\nTrimGalore\nBowtie2\nSamtools\nMacs2\nHOMER\nDeeptools",
+    "text": "Environment\nFor the command line portion If you are using the DRP-HCB Bioinformatics server for this course then all of the data and software is already installed. If you are working through this course from a different Linux computer or server, please make sure the following tools are installed:\n\n\n Required software\n\n\nFastqc\nMultiqc\nTrimGalore\nBowtie2\nSamtools\nMacs2\nHOMER\nDeeptools\n\nAn easy way to install is through conda. Check out our guide and explore how to install and work with conda. Tools can then be installed by downloading the environment (yml) file and running the following commands to install and activate the environment.\nwget https://github.com/DRP-HCB-Bioinformatics/HTS_data_analysis_ChIP-seq/blob/main/htsdac_env.yml\n\nconda env create -f htsdac_env.yml\n\nconda activate htsdac_env",
     "crumbs": [
       "Home"
     ]

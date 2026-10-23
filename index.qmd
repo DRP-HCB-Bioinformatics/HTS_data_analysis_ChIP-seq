@@ -41,4 +41,14 @@ For the command line portion If you are using the DRP-HCB Bioinformatics server 
 - HOMER
 - Deeptools
 
+An easy way to install is through [conda](https://continuumio-docs.readthedocs-hosted.com/miniconda/). Check out [our guide](https://drp-hcb-bioinformatics.github.io/DRP-HCB-Bioinformatics/software.html) and explore how to install and work with conda. Tools can then be installed by downloading the environment (yml) file and running the following commands to install and activate the environment.
+
+``` bash
+wget https://github.com/DRP-HCB-Bioinformatics/HTS_data_analysis_ChIP-seq/blob/main/htsdac_env.yml
+
+conda env create -f htsdac_env.yml
+
+conda activate htsdac_env
+```
+
 :::
