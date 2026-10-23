@@ -21,7 +21,7 @@ ChIP-seq (Chromatin immunoprecipitation followed by sequencing) is a lab based m
 
 ## Connecting to the Server
 
-Today, we will connect to one of the DRP servers to start our Linux journey. Connecting to the server is dependent on the machine you are working with. To connect
+Today, we will connect to one of the DRP servers to start our ChIP-seq journey. Connecting to the server is dependent on the machine you are working with. To connect
 
 -   Both Linux and Mac have a "Terminal", which is command line and can connect to a server using ssh.
 By typing in the following in your terminal, you can easily connect to the DRP server. \
@@ -67,30 +67,32 @@ Please see our [website](https://drp-hcb-bioinformatics.github.io/DRP-HCB-Bioinf
 
 ## Set Up Web Directory
 
-The majority of you will have already done this, but if not we will create a public_html directory in your home, this will allow us to view the files we create later on (after we link our project folder to it).
+Many of you might have previously set up a public_html directory, however if not, let's create a public_html directory in your home. This will allow you to view files we create directly. To be able to easily access our file, we will link the project folder to the public_html.
 
 ``` bash
 cd
+
 mkdir ~/public_html
 ``` 
-'cd' insures we are in our home space although '~/' specifies this is the path to your home anyway.
+Running 'cd' insures we are in our home space (although '~/' specifies this is the path to your home already).
 
-This should now be visible at;
-https://bifx-core3.bio.ed.ac.uk/~username
+You should now be able to access files through 
+`https://bifx-core3.bio.ed.ac.uk/~<UUN>` replacing the <UUN> with your own UUN.
 
-Remember, this is public so do not link to all of your data here.
+**Note:** This is open to the public, so do not link to all of your data here.
 
 
 ## Set up workshop directory
 
 Lets start by creating a new folder for this workshop in our home directory
 ``` bash
-cd 
+cd
+
 mkdir ChIP-seq_workshop
 ```
 
-We can now link this directory to our public page;
-double check this
+Now, We can link this directory to our public page;
+
 ``` bash
 ln -s ~/ChIP-seq_workshop ~/public_html/. 
 ```
@@ -133,8 +135,10 @@ For reference, it is ChIP-Seq on Transcription Factor (TF) *CTCF* using human K5
 
 
 We will create a fastq folder in our own workshop folders
+
 ``` bash
 cd ChIP-seq_workshop
+
 mkdir fastq
 ```
 
@@ -143,7 +147,8 @@ Create a symbolic link to the data
 ln -s /library/training/ASD/03_HTSDAC/data/*fastq.gz fastq/.
 ```
 
-Or if downloading to a local machine use;
+Or if you are working on another machine, download the data using the following commands.
+
 ``` bash
 wget https://bifx-core3.bio.ed.ac.uk/training/ASD/03_HTSDAC/data/CTCF_Rep1.fastq.gz https://bifx-core3.bio.ed.ac.uk/training/ASD/03_HTSDAC/data/CTCF_Rep2.fastq.gz https://bifx-core3.bio.ed.ac.uk/training/ASD/03_HTSDAC/data/Input_Control.fastq.gz
 
