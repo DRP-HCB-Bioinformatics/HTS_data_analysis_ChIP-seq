@@ -60,11 +60,11 @@
     ]
   },
   {
-    "objectID": "04_Analysis.html#optional-excercise",
-    "href": "04_Analysis.html#optional-excercise",
+    "objectID": "04_Analysis.html#optional-exercise",
+    "href": "04_Analysis.html#optional-exercise",
     "title": "HTS data analysis (ChIP-seq)",
-    "section": "Optional Excercise",
-    "text": "Optional Excercise\nRetrieve some FASTQ data (possibly from the previous workshop), perform trimming if needed and map to the relevant reference genome,",
+    "section": "Optional Exercise",
+    "text": "Optional Exercise\nRetrieve some short read FASTQ data (possibly from the previous workshop), perform trimming if needed and map to the relevant reference genome, consider if the aligner used is correct for that data and what implications this has for downstream processing. If performing peak calling consider whether broad peak calling more appropriate. If interested in RNA-Seq analyis see this previous workshop, please note it won’t be possible to follow this exactly as it was designed for a specific system but the steps taken will be the same.",
     "crumbs": [
       "Analysis"
     ]
@@ -145,16 +145,6 @@
     "title": "HTS data analysis (ChIP-seq)",
     "section": "FastQC",
     "text": "FastQC\nFastQC is a tool that provides simple quality control checks on FASTQ files and creates several exploratory plots. The command can take multiple files at once or you can use wildcards (*) to specify multiple files. Once running, it will provide a progress report for each file.\ncd fastq\nfastqc *.fastq.gz\nFastQC generates a zip file as well as an html file for each input. The html file is the easiest file to view and contains several plots and tables that provide information about the quality of the data. The zip file contains the raw data used to generate the plots, which can be useful for further analysis or troubleshooting.\nOnce this is finished you can view the reports via; https://bifx-core3.bio.ed.ac.uk/~username\nIn your web browser, navigate to your workshop folder and the reports are under fastq ending with ’_fastqc.html’\nPre compiled FastQC reports are also available here\nA reminder of what each section means can be found in the FastQC docs\nFeel free to look through these but it’s generally easier to aggregate our reports into one, we can do with with MultiQC.",
-    "crumbs": [
-      "Processing Data"
-    ]
-  },
-  {
-    "objectID": "02_Processing_data.html#fastq-screen",
-    "href": "02_Processing_data.html#fastq-screen",
-    "title": "HTS data analysis (ChIP-seq)",
-    "section": "Fastq screen",
-    "text": "Fastq screen\ndont really need/already covered?",
     "crumbs": [
       "Processing Data"
     ]
@@ -250,6 +240,16 @@
     ]
   },
   {
+    "objectID": "01_Getting_started.html#chip-seq",
+    "href": "01_Getting_started.html#chip-seq",
+    "title": "HTS data analysis (ChIP-seq)",
+    "section": "ChIP-seq",
+    "text": "ChIP-seq\nChIP-seq (Chromatin immunoprecipitation followed by sequencing) is a lab based method to identify DNA-binding regions of specific proteins, often looking at either histone modifications or transcription factor binding sites, while the initial steps for these are the same, peak calling and downstream analysis will differ.",
+    "crumbs": [
+      "Getting Started"
+    ]
+  },
+  {
     "objectID": "01_Getting_started.html#connecting-to-the-server",
     "href": "01_Getting_started.html#connecting-to-the-server",
     "title": "HTS data analysis (ChIP-seq)",
@@ -305,25 +305,5 @@
     "title": "Intro To ChIP-Seq",
     "section": "",
     "text": "dump general notes here;\nBioinformatics core at the Discovery Research Platform for Hidden Cell Biology, today we are building on skills learned from previous sessions, now looking specifically at ChIP-Seq data and considering it’s experimental design, particularly the use of input controls and the importance of replicates. We will briefly QC our raw reads, before looking at alignment and understanding those outputs i.e. what makes a “good” alignment and what to consider filtering. Downstream,we will perform peak calling and understand how to explore regions of interest. Running through this will be standard visualisation techniques to explore tracks from the data in a genome browser. Finally, looking at specific tools to measure the success of the actual experiment.\n\n\n Challenge:\n\nchallenge text\n\n\nSolution\n\n\nSolution. \n\n Solution:\n\nsolution text\n\n\n\n\n\n Key points"
-  },
-  {
-    "objectID": "01_Getting_started.html#chip-seq",
-    "href": "01_Getting_started.html#chip-seq",
-    "title": "HTS data analysis (ChIP-seq)",
-    "section": "ChIP-seq",
-    "text": "ChIP-seq\nChIP-seq (Chromatin immunoprecipitation followed by sequencing) is a lab based method to identify DNA-binding regions of specific proteins, often looking at either histone modifications or transcription factor binding sites, while the initial steps for these are the same, peak calling and downstream analysis will differ.",
-    "crumbs": [
-      "Getting Started"
-    ]
-  },
-  {
-    "objectID": "04_Analysis.html#optional-exercise",
-    "href": "04_Analysis.html#optional-exercise",
-    "title": "HTS data analysis (ChIP-seq)",
-    "section": "Optional Exercise",
-    "text": "Optional Exercise\nRetrieve some short read FASTQ data (possibly from the previous workshop), perform trimming if needed and map to the relevant reference genome, consider if the aligner used is correct for that data and what implications this has for downstream processing. If performing peak calling consider whether broad peak calling more appropriate. If interested in RNA-Seq analyis see this previous workshop, please note it won’t be possible to follow this exactly as it was designed for a specific system but the steps taken will be the same.",
-    "crumbs": [
-      "Analysis"
-    ]
   }
 ]
