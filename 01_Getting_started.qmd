@@ -152,7 +152,7 @@ Or if you are working on another machine, download the data using the following 
 ``` bash
 wget https://bifx-core3.bio.ed.ac.uk/training/ASD/03_HTSDAC/data/CTCF_Rep1.fastq.gz https://bifx-core3.bio.ed.ac.uk/training/ASD/03_HTSDAC/data/CTCF_Rep2.fastq.gz https://bifx-core3.bio.ed.ac.uk/training/ASD/03_HTSDAC/data/Input_Control.fastq.gz
 
-mv *fastq.gz test/.
+mv *fastq.gz fastq/.
 ```
 
 ##  FASTQ Format 
