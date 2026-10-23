@@ -1,0 +1,14 @@
+name: chipseq_env
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - fastqc
+  - multiqc
+  - trim-galore
+  - bowtie2
+  - samtools
+  - macs2
+  - homer
+  - deeptools
