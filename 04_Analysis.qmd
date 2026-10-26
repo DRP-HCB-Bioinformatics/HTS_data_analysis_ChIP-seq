@@ -38,8 +38,25 @@ macs2 callpeak -t bt2_out/CTCF_Rep2_filtered.bam \
   --outdir macs2_results/
 ```
 
-Once we have called our peaks we can add these to our IGV session, but first lets start the next step running, we will examine the sequence at our peaks for specific motifs.
+Here is a concise description of the Macs2 method for Reference:
 
+![](images/macs_meth.jpg){width="599"}
+
+
+- Removing redundancy - MACS retains uniquely mapped reads and removes reads that are repeatedly mapped to the same location. This reduces effects of PCR amplification biases during library preparation.
+
+- Build model and estimate fragment size - one of the MACS inputs is the fragment size or bandwidth, which is approximate size of DNA fragments generated during fragmentation step of library preparation. MACS first slides a window sized at twice the bandwidth across the genome and finds instances where read counts enriched by between 10 and 30 fold relative to the genome background. It then randomly samples 1,000 of such regions and builds the model. To build the model it separates reads mapping to each of the strands and builds two distributions (two modes). The midpoint between the two modes is the middle of the binding size and the distance between the modes is the fragment size d (see Figure below).
+
+- Generate peaks - now that d has been defined MACS slides a window of size 2d across the genome to identify regions significantly enriched in the ChIP sample. MACS assumes that background reads obey [Poisson distribution](https://en.wikipedia.org/wiki/Poisson_distribution). Thus given the number of reads in a given interval within the control sample we can calculate the probability of having observed number of reads in the ChIP sample (e.g., see flood example [here](https://en.wikipedia.org/wiki/Poisson_distribution#Examples_of_probability_for_Poisson_distributions)). This procedure is performed for several intervals around the examined location (2d, 1kb, 5kb, 10kb, and the whole genome) and the maximum value is chosen. One problem with this approach is that it only works if both samples (ChIP and control) are sequenced to the same depth, which is not usually happening in practice. To correct this MACS scales down the larger sample.
+
+- Compute False Discovery Rate (FDR) - [Feng:2012](https://www.nature.com/articles/nprot.2012.101) explains computing FDR in MACS as follows: “When a control sample is available (and you should really always use it), MACS can also estimate an empirical FDR for every peak by exchanging the ChIP-seq and control samples and identifying peaks in the control sample using the same set of parameters used for the ChIP-seq sample. Because the control sample should not exhibit read enrichment, any such peaks found by MACS can be regarded as false positives. For a particular P value threshold, the empirical FDR is then calculated as the number of control peaks passing the threshold divided by the number of ChIP-seq peaks passing the same threshold.”
+
+Peaks mapped to two strands are treated separately to build two coverage density profiles - two modes. The distance between the modes is the fragment size d.
+
+![](images/macs_peak.png){width="499"}
+
+
+Once we have called our peaks we can add these to our IGV session, but first lets start the next step running, we will examine the sequence at our peaks for specific motifs.
 
 These are in .narrowPeaks files, the columns are as follows:
 
@@ -49,18 +66,19 @@ These are in .narrowPeaks files, the columns are as follows:
 - Iterative id given by MACS2
 - Integer score for display
 - Strand (irrelevant in this case)
-- Fold-change (fold enrichment for this peak summit against random Poisson distribution with local lambda)
+- Fold-change (fold enrichment for this peak summit against random Poisson distribution with local [lambda](https://en.wikipedia.org/wiki/Poisson_distribution))
 - log10 P-value (e.g., 17.68 is 1 x 10-17)
-- log10 Q-value from Benjamini–Hochberg–Yekutieli procedure
+- log10 Q-value from [Benjamini–Hochberg–Yekutieli procedure](https://en.wikipedia.org/wiki/False_discovery_rate#Benjamini.E2.80.93Hochberg.E2.80.93Yekutieli_procedure)
 - Relative summit position to peak start
 
 
 
 ## HOMER
 
-We will just run this on our first replicate, we are using a script from the HOMER suite of tools, we will select the top 500 peaks to speed things up.
+[HOMER](http://homer.ucsd.edu/homer/index.html) was initially developed to automate the process of finding enriched motifs in ChIP-seq peaks, here we are using a perl [script](http://homer.ucsd.edu/homer/ngs/peakMotifs.html) included with Homer.
+We will just run this on our first replicate, first we will select the top 500 peaks to speed things up.
 
-Filtered sort by Q value
+Filtered sort by Q value column, then output only top 500 to file
 ``` bash
 sort -k9,9nr macs2_results/CTCF_Rep1_peaks.narrowPeak | head -n 500 > macs2_results/CTCF_Rep1_top500_peaks.narrowPeak
 ```
@@ -94,7 +112,7 @@ Go back to your web browser and navigate to the macs2_results, here we want to d
 
 ![](images/tracks_peaks.png){width="100%" height="auto"}
 
-Go back to the "peaks" you examined before, are the results what you expected? Can you see where the highest point of the peak is?
+Go back to the peaks/Regions of interest you examined before, are the results what you expected? Can you see where the highest point of the peak is from the narrowPeak file? Are there any other output tracks from Macs2? Can you navigate to the above region adjacent to CARM1 gene?
 
 
 ## DeepTools
@@ -115,7 +133,7 @@ computeMatrix reference-point \
   -p 4
 ```
 
-Once the above matrix file is created we can plot and customise our heatmap, feel free to play around with the colorMap or any other [parameters](https://deeptools.readthedocs.io/en/develop/content/tools/plotHeatmap.html).
+Once the above matrix file is created we can plot and customise our heatmap, feel free to play around with any  [parameters](https://deeptools.readthedocs.io/en/develop/content/tools/plotHeatmap.html).
 
 ``` bash
 plotHeatmap -m CTCF_multi_matrix.gz \
@@ -127,6 +145,30 @@ plotHeatmap -m CTCF_multi_matrix.gz \
 ```
 
 ![](images/CTCF_multi_heatmap.png){width="599"}
+
+
+:::: challenge
+<h2><i class="fas fa-pencil-alt"></i> Challenge:</h2>
+
+Can you re plot this but change the colormap?
+
+<details>
+
+<summary>Solution</summary>
+
+::: solution
+<h2><i class="far fa-eye"></i> Solution:</h2>
+
+See help;
+
+--colorMap
+
+Color map to use for the heatmap. If more than one heatmap is being plotted the color of each heatmap can be enter individually (e.g. –colorMap Reds Blues). Color maps are recycled if the number of color maps is smaller than the number of heatmaps being plotted. Available values can be seen [here](http://matplotlib.org/users/colormaps.html): The available options are: ‘magma’, ‘inferno’, ‘plasma’, ‘viridis’, ‘cividis’, ‘twilight’, ‘twilight_shifted’, ‘turbo’, ‘Blues’, ‘BrBG’, ‘BuGn’, ‘BuPu’, ‘CMRmap’, ‘GnBu’, ‘Greens’, ‘Greys’, ‘OrRd’, ‘Oranges’, ‘PRGn’, ‘PiYG’, ‘PuBu’, ‘PuBuGn’, ‘PuOr’, ‘PuRd’, ‘Purples’, ‘RdBu’, ‘RdGy’, ‘RdPu’, ‘RdYlBu’, ‘RdYlGn’, ‘Reds’, ‘Spectral’, ‘Wistia’, ‘YlGn’, ‘YlGnBu’, ‘YlOrBr’, ‘YlOrRd’, ‘afmhot’, ‘autumn’, ‘binary’, ‘bone’, ‘brg’, ‘bwr’, ‘cool’, ‘coolwarm’, ‘copper’, ‘cubehelix’, ‘flag’, ‘gist_earth’, ‘gist_gray’, ‘gist_heat’, ‘gist_ncar’, ‘gist_rainbow’, ‘gist_stern’, ‘gist_yarg’, ‘gnuplot’, ‘gnuplot2’, ‘gray’, ‘hot’, ‘hsv’, ‘jet’, ‘nipy_spectral’, ‘ocean’, ‘pink’, ‘prism’, ‘rainbow’, ‘seismic’, ‘spring’, ‘summer’, ‘terrain’, ‘winter’, ‘Accent’, ‘Dark2’, ‘Paired’, ‘Pastel1’, ‘Pastel2’, ‘Set1’, ‘Set2’, ‘Set3’, ‘tab10’, ‘tab20’, ‘tab20b’, ‘tab20c’, ‘grey’, ‘gist_grey’, ‘gist_yerg’, ‘Grays’, ‘rocket’, ‘mako’, ‘vlag’, ‘icefire’
+
+:::
+
+</details>
+::::
 
 
 Deeptools offers a lot of plotting functions to assess short read data, take a look at the [List of Tools](https://deeptools.readthedocs.io/en/develop/content/list_of_tools.html), particularly those for QC and summaries, you should have the relevant files already.

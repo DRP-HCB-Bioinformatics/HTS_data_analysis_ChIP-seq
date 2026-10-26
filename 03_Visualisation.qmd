@@ -25,14 +25,21 @@ Click and hold on a track to move left and right, or right click to see options 
 
 ![](images/tracks_zoom.png){width="100%" height="auto"} 
 
-We expect our input to look relatively flat, with peaks throughout or ChIP data, hopefully consistent between replicates. Do you see "peaks" that look real? Are they seen in both replicates with a flat background input, conversely to you see any obvious peaks in the input? Later we will run peak calling and view these in IGV but its always good to examine the data at the earliest opportunity.
+We expect our input to look relatively flat, with peaks throughout or ChIP data, hopefully consistent between replicates. Do you see "peaks" that look real? Are they seen in both replicates with a flat background input, conversely to you see any obvious peaks in the input? Later we will run peak calling and view these in IGV but its always good to examine the data at the earliest opportunity. 
 
+Use the Region of Interest tool from the top toolbar ![](images/roi.png){width=50} 
 
-Here I have used group autoscale to set the data range dynamically, I've also changed the colour of my input track.
+Select an example of some peaks that look real and are present in both replicates, a region with peaks across input and perhaps a region which is ambiguous. To do this click on the track at two points, this creates ROI shortcut band.
+
+Here I have used group autoscale to set the data range dynamically, I've also changed the colour of my input track, see if you can replicate this view.
+
 ![](images/tracks_edit.png){width="100%" height="auto"}
 
-Try adding a BAM track (easiest to use URL for this), you'll need to zoom in close to see anything, notice IGV creates a basic coverage track for us, does this look the same as your bigWig? Have a very close look at the alignments, what do the different coloured bands mean?
+Try adding a BAM track (easiest to use URL for this), you'll need to zoom in close to see anything, notice IGV creates a basic coverage track for us, does this look the same as your bigWig? Have a very close look at the alignments, what do the different coloured bands mean? See the [Docs](https://igv.org/doc/desktop/#UserGuide/tracks/alignments/viewing_alignments_basics) for more information.
 
 ![](images/tracks_bam.png){width="100%" height="auto"}
+
+They also have some useful video [tutorials](https://igv.org/doc/desktop/#TutorialVideos/). 
+
 
 Keep this open for now,  we will come back to it later.

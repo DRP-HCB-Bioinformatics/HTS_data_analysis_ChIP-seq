@@ -201,9 +201,13 @@ ul.task-list li input[type="checkbox"] {
 <p>Click and hold on a track to move left and right, or right click to see options available for each track, on the left panel you can see track information, it is possible to select multiple tracks here. Take some time to navigate the genome, play around with different options for the tracks and have a closer look at chromosome 19.</p>
 <p><img src="images/tracks_zoom.png" style="width:100.0%"></p>
 <p>We expect our input to look relatively flat, with peaks throughout or ChIP data, hopefully consistent between replicates. Do you see “peaks” that look real? Are they seen in both replicates with a flat background input, conversely to you see any obvious peaks in the input? Later we will run peak calling and view these in IGV but its always good to examine the data at the earliest opportunity.</p>
-<p>Here I have used group autoscale to set the data range dynamically, I’ve also changed the colour of my input track. <img src="images/tracks_edit.png" style="width:100.0%"></p>
-<p>Try adding a BAM track (easiest to use URL for this), you’ll need to zoom in close to see anything, notice IGV creates a basic coverage track for us, does this look the same as your bigWig? Have a very close look at the alignments, what do the different coloured bands mean?</p>
+<p>Use the Region of Interest tool from the top toolbar <img src="images/roi.png" class="img-fluid" width="50"></p>
+<p>Select an example of some peaks that look real and are present in both replicates, a region with peaks across input and perhaps a region which is ambiguous. To do this click on the track at two points, this creates ROI shortcut band.</p>
+<p>Here I have used group autoscale to set the data range dynamically, I’ve also changed the colour of my input track, see if you can replicate this view.</p>
+<p><img src="images/tracks_edit.png" style="width:100.0%"></p>
+<p>Try adding a BAM track (easiest to use URL for this), you’ll need to zoom in close to see anything, notice IGV creates a basic coverage track for us, does this look the same as your bigWig? Have a very close look at the alignments, what do the different coloured bands mean? See the <a href="https://igv.org/doc/desktop/#UserGuide/tracks/alignments/viewing_alignments_basics">Docs</a> for more information.</p>
 <p><img src="images/tracks_bam.png" style="width:100.0%"></p>
+<p>They also have some useful video <a href="https://igv.org/doc/desktop/#TutorialVideos/">tutorials</a>.</p>
 <p>Keep this open for now, we will come back to it later.</p>
 
 
