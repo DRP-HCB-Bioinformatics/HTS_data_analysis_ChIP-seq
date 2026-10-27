@@ -104,7 +104,7 @@ This generates new 'trimmed' FASTQ files as well as text reports (ending '_trimm
 Reports can be viewed as text files;
 
 ``` bash
-less fastq/CTCF_Rep1.fastq.gz_trimming_report.txt 
+less CTCF_Rep1.fastq.gz_trimming_report.txt 
 ```
 
 ## QC on Trimmed Data
